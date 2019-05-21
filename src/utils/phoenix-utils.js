@@ -129,11 +129,15 @@ export async function createAndRedirectToNewHub(name, sceneId, sceneUrl, replace
   // const payload = { hub: { name: name || generateHubName() } };
   const payload = { hub: { name: 'Axon Park' } };
 
-  if (sceneId) {
-    payload.hub.scene_id = sceneId;
-  } else {
-    payload.hub.default_environment_gltf_bundle_url = sceneUrl;
-  }
+  // if (sceneId) {
+  //   payload.hub.scene_id = sceneId;
+  // } else {
+    // payload.hub.default_environment_gltf_bundle_url = sceneUrl;
+    
+    // payload.hub.default_environment_gltf_bundle_url = 'https://www.dropbox.com/s/ayl3t33p2ymnxux/Axon%20Park_Cliffside.glb';
+    payload.hub.default_environment_gltf_bundle_url = 'https://s3-us-west-1.amazonaws.com/axonpark/Axon_Park_Cliffside.glb';
+    // payload.hub.default_environment_gltf_bundle_url = '/assets/Axon_Park_Cliffside.glb';
+  // }
 
   const headers = { "content-type": "application/json" };
   const store = new Store();

@@ -290,7 +290,7 @@ async function updateUIForHub(hub) {
 }
 
 async function updateEnvironmentForHub(hub) {
-  let sceneUrl = 'https://uploads-prod.reticulum.io/files/57af6c9a-7bd8-42ed-a097-4f575f0db3ab.bin'
+  let sceneUrl = 'https://www.dropbox.com/s/ayl3t33p2ymnxux/Axon%20Park_Cliffside.glb'
   let isLegacyBundle; // Deprecated
 
   const environmentScene = document.querySelector("#environment-scene");
