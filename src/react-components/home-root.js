@@ -212,7 +212,7 @@ class HomeRoot extends Component {
           <div className={mainContentClassNames}>
             <div className={styles.headerContent}>
               <div className={styles.titleAndNav} onClick={() => (document.location = "/")}>
-                <div className={styles.links}>
+                {false && <div className={styles.links}>
                   <WithHoverSound>
                     <a href="/whats-new">
                       <FormattedMessage id="home.whats_new_link" />
@@ -233,7 +233,7 @@ class HomeRoot extends Component {
                       Spoke
                     </a>
                   </WithHoverSound>
-                </div>
+                </div>}
               </div>
               <div className={styles.signIn}>
                 {this.state.signedIn ? (
@@ -255,8 +255,8 @@ class HomeRoot extends Component {
             <div className={styles.heroContent}>
               <div className={styles.heroPanel}>
                 <div className={styles.container}>
-                  <div className={styles.logo}>
-                    <img src={hubLogo} />
+                  <div className={styles.logo} style={{alignSelf: 'center', maxWidth: 150, marginBottom: 15}}>
+                    <img src={'https://scontent-lax3-2.xx.fbcdn.net/v/t1.0-9/54268481_418828918875645_3756046202836090880_n.jpg?_nc_cat=105&_nc_ht=scontent-lax3-2.xx&oh=565c73168d488999f10fe235c26e504b&oe=5D5DE7BB'} />
                   </div>
                   <div className={styles.blurb}>
                     <FormattedMessage id="home.hero_blurb" />
@@ -292,7 +292,7 @@ class HomeRoot extends Component {
                     </div>
                   </WithHoverSound>
 
-                  <WithHoverSound>
+                  {false && <WithHoverSound>
                     <div className={styles.secondaryLink}>
                       <div>
                         <FormattedMessage id="home.add_to_discord_1" />
@@ -305,12 +305,12 @@ class HomeRoot extends Component {
                         <FormattedMessage id="home.add_to_discord_3" />
                       </div>
                     </div>
-                  </WithHoverSound>
+                  </WithHoverSound>}
                 </div>
               </div>
             </div>
             <div className={styles.footerContent}>
-              <div className={styles.links}>
+              {false && <div className={styles.links}>
                 <div className={styles.top}>
                   <WithHoverSound>
                     <a
@@ -365,7 +365,7 @@ class HomeRoot extends Component {
 
                   <img className={styles.mozLogo} src={mozLogo} />
                 </div>
-              </div>
+              </div>}
             </div>
           </div>
           {this.state.dialog}

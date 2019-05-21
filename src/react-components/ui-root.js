@@ -966,7 +966,7 @@ class UIRoot extends Component {
       <div className={entryStyles.entryPanel}>
         <div className={entryStyles.name}>
           <span>{this.props.hubName}</span>
-          {this.props.hubChannel.canOrWillIfCreator("update_hub") && (
+          {this.props.hubChannel.canOrWillIfCreator("update_hub") && false && (
             <button
               onClick={() =>
                 this.props.performConditionalSignIn(
@@ -1001,7 +1001,7 @@ class UIRoot extends Component {
         </div>
 
         <div className={entryStyles.center}>
-          {this.props.hubChannel.canOrWillIfCreator("update_hub") ? (
+          {this.props.hubChannel.canOrWillIfCreator("update_hub") && false ? (
             <WithHoverSound>
               <div
                 className={classNames([entryStyles.lobbyLabel, entryStyles.chooseScene])}
