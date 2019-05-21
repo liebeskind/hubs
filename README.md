@@ -16,7 +16,19 @@ npm start
 
 Then visit https://localhost:8080
 
-Note: When running the Hubs client locally, you will still connect to the development versions of our [Janus WebRTC](https://github.com/mozilla/janus-plugin-sfu) and [reticulum](https://github.com/mozilla/reticulum) servers. 
+Note: When running the Hubs client locally, you will still connect to the development versions of our [Janus WebRTC](https://github.com/mozilla/janus-plugin-sfu) and [reticulum](https://github.com/mozilla/reticulum) servers.
+
+## Pushing heroku branch to heroku
+
+First thing to do is define buildpack with command: `heroku buildpacks:set https://github.com/heroku/heroku-buildpack-static.git.`
+Create in your root folder a file named static.json if it doesn't already exist.
+Now run `git rm package-lock.json`.
+Open your .gitignore remove dist from there.
+
+```sh
+npm run build
+git push heroku heroku:master
+```
 
 ## Building Static Files
 
@@ -59,7 +71,7 @@ This will allow the CSP checks to pass that are served up by Reticulum so you ca
 - `quality` - Either "low" or "high". Force assets to a certain quality level
 - `mobile` - Force mobile mode
 - `no_stats` - Disable performance stats
-- `vr_entry_type` - Either "2d", "vr", or "daydream". Used internally to force a VR entry type. Add "_now" to the end of the value to skip the audio check.
+- `vr_entry_type` - Either "2d", "vr", or "daydream". Used internally to force a VR entry type. Add "\_now" to the end of the value to skip the audio check.
 - `disable_telemetry` - If `true` disables Sentry telemetry.
 - `log_filter` - A `debug` style filter for setting the logging level.
 - `debug` - If `true` performs verbose logging of Janus and NAF traffic.
@@ -69,10 +81,10 @@ This will allow the CSP checks to pass that are served up by Reticulum so you ca
 
 ## Additional Resources
 
-* [Reticulum](https://github.com/mozilla/reticulum) - Phoenix-based backend for managing state and presence.
-* [NAF Janus Adapter](https://github.com/mozilla/naf-janus-adapter) - A [Networked A-Frame](https://github.com/networked-aframe) adapter for the Janus SFU service.
-* [Janus Gateway](https://github.com/meetecho/janus-gateway) - A WebRTC proxy used for centralizing network traffic in this client.
-* [Janus SFU Plugin](https://github.com/mozilla/janus-plugin-sfu) - Plugins for Janus which enables it to act as a SFU.
-* [Hubs-Ops](https://github.com/mozilla/hubs-ops) - Infrastructure as code + management tools for running necessary backend services on AWS.
+- [Reticulum](https://github.com/mozilla/reticulum) - Phoenix-based backend for managing state and presence.
+- [NAF Janus Adapter](https://github.com/mozilla/naf-janus-adapter) - A [Networked A-Frame](https://github.com/networked-aframe) adapter for the Janus SFU service.
+- [Janus Gateway](https://github.com/meetecho/janus-gateway) - A WebRTC proxy used for centralizing network traffic in this client.
+- [Janus SFU Plugin](https://github.com/mozilla/janus-plugin-sfu) - Plugins for Janus which enables it to act as a SFU.
+- [Hubs-Ops](https://github.com/mozilla/hubs-ops) - Infrastructure as code + management tools for running necessary backend services on AWS.
 
 [![Waffle.io - Columns and their card count](https://badge.waffle.io/mozilla/socialmr.svg?columns=all)](http://waffle.io/mozilla/socialmr)
