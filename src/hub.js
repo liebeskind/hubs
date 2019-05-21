@@ -289,36 +289,36 @@ async function updateUIForHub(hub) {
 }
 
 async function updateEnvironmentForHub(hub) {
-  let sceneUrl;
-  let isLegacyBundle; // Deprecated
+  let sceneUrl = 'https://uploads-prod.reticulum.io/files/57af6c9a-7bd8-42ed-a097-4f575f0db3ab.bin'
+  // let isLegacyBundle; // Deprecated
 
-  const environmentScene = document.querySelector("#environment-scene");
-  const sceneEl = document.querySelector("a-scene");
+  // const environmentScene = document.querySelector("#environment-scene");
+  // const sceneEl = document.querySelector("a-scene");
 
-  if (hub.scene) {
-    isLegacyBundle = false;
-    sceneUrl = hub.scene.model_url;
-  } else if (hub.scene === null) {
-    // delisted/removed scene
-    sceneUrl = loadingEnvironmentURL;
-  } else {
-    const defaultSpaceTopic = hub.topics[0];
-    const glbAsset = defaultSpaceTopic.assets.find(a => a.asset_type === "glb");
-    const bundleAsset = defaultSpaceTopic.assets.find(a => a.asset_type === "gltf_bundle");
-    sceneUrl = (glbAsset || bundleAsset).src;
-    const hasExtension = /\.gltf/i.test(sceneUrl) || /\.glb/i.test(sceneUrl);
-    isLegacyBundle = !(glbAsset || hasExtension);
-  }
+  // if (hub.scene) {
+  //   isLegacyBundle = false;
+  //   sceneUrl = hub.scene.model_url;
+  // } else if (hub.scene === null) {
+  //   // delisted/removed scene
+  //   sceneUrl = loadingEnvironmentURL;
+  // } else {
+  //   const defaultSpaceTopic = hub.topics[0];
+  //   const glbAsset = defaultSpaceTopic.assets.find(a => a.asset_type === "glb");
+  //   const bundleAsset = defaultSpaceTopic.assets.find(a => a.asset_type === "gltf_bundle");
+  //   sceneUrl = (glbAsset || bundleAsset).src;
+  //   const hasExtension = /\.gltf/i.test(sceneUrl) || /\.glb/i.test(sceneUrl);
+  //   isLegacyBundle = !(glbAsset || hasExtension);
+  // }
 
-  if (isLegacyBundle) {
-    // Deprecated
-    const res = await fetch(sceneUrl);
-    const data = await res.json();
-    const baseURL = new URL(THREE.LoaderUtils.extractUrlBase(sceneUrl), window.location.href);
-    sceneUrl = new URL(data.assets[0].src, baseURL).href;
-  } else {
-    sceneUrl = proxiedUrlFor(sceneUrl);
-  }
+  // if (isLegacyBundle) {
+  //   // Deprecated
+  //   const res = await fetch(sceneUrl);
+  //   const data = await res.json();
+  //   const baseURL = new URL(THREE.LoaderUtils.extractUrlBase(sceneUrl), window.location.href);
+  //   sceneUrl = new URL(data.assets[0].src, baseURL).href;
+  // } else {
+  //   sceneUrl = proxiedUrlFor(sceneUrl);
+  // }
 
   console.log(`Scene URL: ${sceneUrl}`);
 
