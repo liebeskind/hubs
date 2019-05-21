@@ -292,8 +292,8 @@ async function updateEnvironmentForHub(hub) {
   let sceneUrl = 'https://uploads-prod.reticulum.io/files/57af6c9a-7bd8-42ed-a097-4f575f0db3ab.bin'
   // let isLegacyBundle; // Deprecated
 
-  // const environmentScene = document.querySelector("#environment-scene");
-  // const sceneEl = document.querySelector("a-scene");
+  const environmentScene = document.querySelector("#environment-scene");
+  const sceneEl = document.querySelector("a-scene");
 
   // if (hub.scene) {
   //   isLegacyBundle = false;
