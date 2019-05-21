@@ -23,7 +23,8 @@
     "lint": "npm run lint:js && npm run lint:html",
     "test": "npm run lint && npm run test:unit && npm run build",
     "test:unit": "ava",
-    "stats": "rimraf ./dist && webpack --mode=production --json"
+    "stats": "rimraf ./dist && webpack --mode=production --json",
+    "heroku-prebuild": "npm install --dev",
   },
   "ava": {
     "files": [
