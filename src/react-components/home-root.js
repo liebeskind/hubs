@@ -4,6 +4,8 @@ import { IntlProvider, FormattedMessage, addLocaleData } from "react-intl";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import en from "react-intl/locale-data/en";
 
+import { airtableAssets, airtableAssetsInitialState } from '../airtable'
+
 import { lang, messages } from "../utils/i18n";
 import { playVideoWithStopOnBlur } from "../utils/video-utils.js";
 import homeVideoWebM from "../assets/video/home.webm";
@@ -64,6 +66,7 @@ class HomeRoot extends Component {
     super(props);
     this.state.signedIn = props.authChannel.signedIn;
     this.state.email = props.authChannel.email;
+    this.state.airtableAssets = airtableAssetsInitialState;
   }
 
   componentDidMount() {
@@ -83,6 +86,10 @@ class HomeRoot extends Component {
     } else if (this.props.report) {
       this.showReportDialog();
     }
+
+    airtableAssets.find('recHqITRS7cBMwn9i', (err, record) => 
+       this.setState({airtableAssets: record.fields})
+    )
   }
 
   async verifyAuth() {
@@ -379,8 +386,8 @@ class HomeRoot extends Component {
     return [
       <div className={styles.heroPanel} key={1}>
         <div className={styles.container}>
-          <div className={classNames([styles.logo, styles.logoMargin])}>
-            <img src={hubLogo} />
+          <div className={classNames([styles.logo, styles.logoMargin])} >
+            <img src={this.state.airtableAssets.DarkLogo} />
           </div>
         </div>
         <div className={styles.ctaButtons}>
@@ -402,8 +409,8 @@ class HomeRoot extends Component {
     return (
       <div className={styles.heroPanel}>
         <div className={styles.container}>
-          <div className={styles.logo}>
-            <img src={hubLogo} />
+          <div className={styles.logo} style={{alignSelf: 'center', maxWidth: 250, marginBottom: 15}}>
+            <img src={this.state.airtableAssets.DarkLogo} />
           </div>
           <div className={styles.blurb}>
             <FormattedMessage id="home.hero_blurb" />
