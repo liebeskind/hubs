@@ -21,6 +21,11 @@ const k = name => {
 export const keyboardMouseUserBindings = addSetsToBindings({
   [sets.global]: [
     {
+      src: {},
+      dest: { value: paths.actions.cursor.hideLine },
+      xform: xforms.always(true)
+    },
+    {
       src: {
         w: paths.device.keyboard.key("arrowup"),
         a: paths.device.keyboard.key("arrowleft"),
@@ -143,6 +148,11 @@ export const keyboardMouseUserBindings = addSetsToBindings({
       src: { x: "/var/smartMouseCamDeltaXScaled", y: "/var/smartMouseCamDeltaYScaled" },
       dest: { value: paths.actions.cameraDelta },
       xform: xforms.compose_vec2
+    },
+    {
+      src: { value: paths.actions.cameraDelta },
+      dest: { value: paths.actions.lobbyCameraDelta },
+      xform: xforms.copy
     },
     {
       src: {

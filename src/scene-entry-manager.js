@@ -142,9 +142,9 @@ export default class SceneEntryManager {
 
   _setupPlayerRig = () => {
     this._setPlayerInfoFromProfile();
+    this.store.addEventListener("statechanged", this._setPlayerInfoFromProfile);
 
     const avatarScale = parseInt(qs.get("avatar_scale"), 10);
-
     if (avatarScale) {
       this.playerRig.setAttribute("scale", { x: avatarScale, y: avatarScale, z: avatarScale });
     }
@@ -155,7 +155,6 @@ export default class SceneEntryManager {
     const avatarSrc = await getAvatarSrc(avatarId);
 
     this.playerRig.setAttribute("player-info", { avatarSrc, avatarType: getAvatarType(avatarId) });
-    this.store.addEventListener("statechanged", this._setPlayerInfoFromProfile);
   };
 
   _setupKicking = () => {
@@ -418,6 +417,7 @@ export default class SceneEntryManager {
       isHandlingVideoShare = true;
 
       if (currentVideoShareEntity && currentVideoShareEntity.parentNode) {
+        NAF.utils.takeOwnership(currentVideoShareEntity);
         currentVideoShareEntity.parentNode.removeChild(currentVideoShareEntity);
       }
 

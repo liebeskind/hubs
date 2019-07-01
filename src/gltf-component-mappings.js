@@ -1,6 +1,6 @@
 import "./components/gltf-model-plus";
 import { getSanitizedComponentMapping } from "./utils/component-mappings";
-import { isHubsDestinationUrl } from "./utils/media-utils";
+import { isHubsDestinationUrl } from "./utils/media-url-utils";
 const PHYSICS_CONSTANTS = require("aframe-physics-system/src/constants"),
   TYPE = PHYSICS_CONSTANTS.TYPE,
   SHAPE = PHYSICS_CONSTANTS.SHAPE,
@@ -312,3 +312,23 @@ AFRAME.GLTFModelPlus.registerComponent(
     });
   }
 );
+
+AFRAME.GLTFModelPlus.registerComponent("heightfield", "heightfield", (el, componentName, componentData) => {
+  el.setAttribute("ammo-shape__heightfield", {
+    type: SHAPE.HEIGHTFIELD,
+    margin: 0.01,
+    fit: FIT.MANUAL,
+    heightfieldDistance: componentData.distance,
+    offset: componentData.offset,
+    heightfieldData: componentData.data
+  });
+});
+
+AFRAME.GLTFModelPlus.registerComponent("trimesh", "trimesh", el => {
+  el.setAttribute("ammo-shape__trimesh", {
+    type: SHAPE.MESH,
+    margin: 0.01,
+    fit: FIT.ALL,
+    includeInvisible: true
+  });
+});
