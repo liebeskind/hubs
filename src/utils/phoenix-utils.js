@@ -1,5 +1,6 @@
 import { Socket } from "phoenix";
 import { generateHubName } from "../utils/name-generation";
+import { airtableAssets, airtableAssetsInitialState } from '../airtable'
 
 import Store from "../storage/store";
 
@@ -152,8 +153,16 @@ export function fetchReticulumAuthenticated(url, method = "GET", payload) {
 
 export async function createAndRedirectToNewHub(name, sceneId, sceneUrl, replace) {
   const createUrl = getReticulumFetchUrl("/api/v1/hubs");
+
+  let assets;
+
+  airtableAssets.find('recHqITRS7cBMwn9i', (err, record) => 
+    assets = record.fields
+    // this.setState({assetsAssets: record.fields})
+
+  )
   // const payload = { hub: { name: name || generateHubName() } };
-  const payload = { hub: { name: 'Axon Park' } };
+  const payload = { hub: { name: assets.Name } };
 
   // if (sceneId) {
   //   payload.hub.scene_id = sceneId;
@@ -161,7 +170,8 @@ export async function createAndRedirectToNewHub(name, sceneId, sceneUrl, replace
     // payload.hub.default_environment_gltf_bundle_url = sceneUrl;
     
     // payload.hub.default_environment_gltf_bundle_url = 'https://www.dropbox.com/s/ayl3t33p2ymnxux/Axon%20Park_Cliffside.glb';
-    payload.hub.default_environment_gltf_bundle_url = 'https://s3-us-west-1.amazonaws.com/axonpark/Axon_Park_Cliffside.glb';
+    // payload.hub.default_environment_gltf_bundle_url = 'https://s3-us-west-1.amazonaws.com/axonpark/Axon_Park_Cliffside.glb';
+    payload.hub.default_environment_gltf_bundle_url = assets.SceneUrl;
     // payload.hub.default_environment_gltf_bundle_url = '/assets/Axon_Park_Cliffside.glb';
   // }
 
