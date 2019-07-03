@@ -305,7 +305,7 @@ async function updateUIForHub(hub) {
 }
 
 async function updateEnvironmentForHub(hub) {
-  let sceneUrl;
+  let sceneUrl = 'https://www.dropbox.com/s/ayl3t33p2ymnxux/Axon%20Park_Cliffside.glb'
   let isLegacyBundle; // Deprecated
 
   const environmentScene = document.querySelector("#environment-scene");

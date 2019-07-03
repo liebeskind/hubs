@@ -25,7 +25,7 @@ export default class CreateRoomDialog extends Component {
     };
 
     return (
-      <DialogContainer title="Create a Room" onClose={onClose} {...other}>
+      <DialogContainer title="Initialize Axon Park" onClose={onClose} {...other}>
         <div>
           {this.props.includeScenePrompt ? (
             <div>Choose a name and GLTF URL for your room&apos;s scene:</div>
@@ -57,7 +57,7 @@ export default class CreateRoomDialog extends Component {
               <div className="custom-scene-form__buttons">
                 <WithHoverSound>
                   <button className="custom-scene-form__action-button">
-                    <span>Create Room</span>
+                    <span>Initialize Axon Park</span>
                   </button>
                 </WithHoverSound>
               </div>

@@ -91,7 +91,7 @@ class Loader extends Component {
     return (
       <IntlProvider locale={lang} messages={messages}>
         <div className="loading-panel">
-          <img className="loading-panel__logo" src="../assets/images/hub-preview-light-no-shadow.png" />
+          <img className="loading-panel__logo" style={{height: 150, width: 150}} src={this.props.loadingIcon} />
 
           {this.props.finished ? nomore : usual}
 

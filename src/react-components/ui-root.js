@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import copy from "copy-to-clipboard";
+import { airtableAssets, airtableAssetsInitialState } from '../airtable'
 import { IntlProvider, FormattedMessage, addLocaleData } from "react-intl";
 import en from "react-intl/locale-data/en";
 import screenfull from "screenfull";
@@ -224,6 +225,8 @@ class UIRoot extends Component {
 
     // An exit handler that discards event arguments and can be cleaned up.
     this.exitEventHandler = () => this.exit();
+
+    this.state.airtableAssets = airtableAssetsInitialState;
   }
 
   componentDidUpdate(prevProps) {
@@ -319,6 +322,10 @@ class UIRoot extends Component {
     if (this.props.forcedVREntryType && this.props.forcedVREntryType.endsWith("_now")) {
       setTimeout(() => this.handleForceEntry(), 2000);
     }
+
+    airtableAssets.find('recHqITRS7cBMwn9i', (err, record) => 
+       this.setState({airtableAssets: record.fields})
+    )
   }
 
   componentWillUnmount() {
@@ -958,7 +965,11 @@ class UIRoot extends Component {
     return (
       <div className={entryStyles.entryPanel}>
         <div className={entryStyles.name}>
-          {this.props.hubChannel.canOrWillIfCreator("update_hub") ? (
+
+          <span>{this.props.hubName}</span>
+
+          {false && this.props.hubChannel.canOrWillIfCreator("update_hub") ? (
+
             <button
               className={entryStyles.renameButton}
               onClick={() =>
@@ -971,9 +982,9 @@ class UIRoot extends Component {
             >
               {this.props.hubName}
             </button>
-          ) : (
+          ) : false ? (
             <span>{this.props.hubName}</span>
-          )}
+          ) : <span />}
           <button onClick={() => this.setState({ watching: true })} className={entryStyles.collapseButton}>
             <i>
               <FontAwesomeIcon icon={faTimes} />
@@ -999,6 +1010,7 @@ class UIRoot extends Component {
         </div>
 
         <div className={entryStyles.center}>
+
           <LobbyChatBox
             occupantCount={this.occupantCount()}
             discordBridges={this.discordBridges()}
@@ -1303,7 +1315,7 @@ class UIRoot extends Component {
     if (isExited) return this.renderExitedPane();
     if (isLoading) {
       return (
-        <Loader scene={this.props.scene} finished={this.state.noMoreLoadingUpdates} onLoaded={this.onLoadingFinished} />
+        <Loader loadingIcon={this.state.airtableAssets.Icon} scene={this.props.scene} finished={this.state.noMoreLoadingUpdates} onLoaded={this.onLoadingFinished} />
       );
     }
     if (this.props.showInterstitialPrompt) return this.renderInterstitialPrompt();
@@ -1382,6 +1394,7 @@ class UIRoot extends Component {
       this.occupantCount() <= 1;
 
     const showChooseSceneButton =
+    false && 
       !showVREntryButton &&
       !entered &&
       !embed &&
@@ -1428,6 +1441,7 @@ class UIRoot extends Component {
                 hubScene={this.props.hubScene}
                 baseUrl={baseUrl}
                 onLoadClicked={this.props.onPreloadLoadClicked}
+                logo={this.state.DarkLogo}
               />
             )}
 
@@ -1443,6 +1457,7 @@ class UIRoot extends Component {
                   store={this.props.store}
                   mediaSearchStore={this.props.mediaSearchStore}
                   avatarId={props.location.state.detail && props.location.state.detail.avatarId}
+                  logo={this.state.airtableAssets.DarkLogo}
                 />
               )}
             />
@@ -1511,6 +1526,7 @@ class UIRoot extends Component {
                   store={this.props.store}
                   mediaSearchStore={this.props.mediaSearchStore}
                   avatarId={props.location.state.detail && props.location.state.detail.avatarId}
+                  logo={this.state.airtableAssets.DarkLogo}
                 />
               )}
             />
@@ -1679,7 +1695,7 @@ class UIRoot extends Component {
                     [inviteStyles.inviteContainerInverted]: this.state.showShareDialog
                   })}
                 >
-                  {!embed &&
+                  {false && !embed &&
                     !showVREntryButton &&
                     !hasTopTip &&
                     !streaming && (

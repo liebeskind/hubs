@@ -7,7 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { SCHEMA } from "../storage/store";
 import styles from "../assets/stylesheets/profile.scss";
-import hubLogo from "../assets/images/hub-preview-white.png";
+// import hubLogo from "../assets/images/hub-preview-white.png";
 import { WithHoverSound } from "./wrap-with-audio";
 import { fetchAvatar } from "../utils/avatar-utils";
 import { handleTextFieldFocus, handleTextFieldBlur } from "../utils/focus-utils";
@@ -206,7 +206,7 @@ class ProfileEntryPanel extends Component {
             </div>
           </div>
         </form>
-        <img className={styles.logo} src={hubLogo} />
+        <img className={styles.logo} src={this.props.logo} />
       </div>
     );
   }

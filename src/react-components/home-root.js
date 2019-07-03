@@ -4,6 +4,8 @@ import { IntlProvider, FormattedMessage, addLocaleData } from "react-intl";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import en from "react-intl/locale-data/en";
 
+import { airtableAssets, airtableAssetsInitialState } from '../airtable'
+
 import { lang, messages } from "../utils/i18n";
 import { playVideoWithStopOnBlur } from "../utils/video-utils.js";
 import homeVideoWebM from "../assets/video/home.webm";
@@ -64,6 +66,7 @@ class HomeRoot extends Component {
     super(props);
     this.state.signedIn = props.authChannel.signedIn;
     this.state.email = props.authChannel.email;
+    this.state.airtableAssets = airtableAssetsInitialState;
   }
 
   componentDidMount() {
@@ -83,6 +86,10 @@ class HomeRoot extends Component {
     } else if (this.props.report) {
       this.showReportDialog();
     }
+
+    airtableAssets.find('recHqITRS7cBMwn9i', (err, record) => 
+       this.setState({airtableAssets: record.fields})
+    )
   }
 
   async verifyAuth() {
@@ -206,7 +213,8 @@ class HomeRoot extends Component {
           <div className={mainContentClassNames}>
             <div className={styles.headerContent}>
               <div className={styles.titleAndNav} onClick={() => (document.location = "/")}>
-                <div className={styles.links}>
+
+                {false && <div className={styles.links}>
                   <a href="/whats-new">
                     <FormattedMessage id="home.whats_new_link" />
                   </a>
@@ -219,7 +227,14 @@ class HomeRoot extends Component {
                   <a href="/spoke" rel="noreferrer noopener">
                     Spoke
                   </a>
+                </div>}
+
+                <div className={styles.links}>
+                  <a href="https://www.axonpark.com/" target="_blank">
+                    Axon Park Home
+                  </a>
                 </div>
+
               </div>
               <div className={styles.signIn}>
                 {this.state.signedIn ? (
@@ -239,6 +254,7 @@ class HomeRoot extends Component {
               </div>
             </div>
             <div className={styles.heroContent}>
+
               {!this.props.hideHero &&
                 (this.props.favoriteHubsResult &&
                 this.props.favoriteHubsResult.entries.length > 0 &&
@@ -256,13 +272,15 @@ class HomeRoot extends Component {
                     </div>
                   )}
                   <div>
-                    <div className={styles.secondaryLink}>
+
+                    {false && <div className={styles.secondaryLink}>
                       <a href="/link">
                         <FormattedMessage id="home.have_code" />
                       </a>
-                    </div>
+                    </div>}
 
-                    <div className={styles.secondaryLink}>
+
+                    {false && <div className={styles.secondaryLink}>
                       <div>
                         <FormattedMessage id="home.add_to_discord_1" />
                       </div>
@@ -273,13 +291,13 @@ class HomeRoot extends Component {
                       <div>
                         <FormattedMessage id="home.add_to_discord_3" />
                       </div>
-                    </div>
+                    </div>}
                   </div>
                 </div>
               )}
             </div>
             <div className={styles.footerContent}>
-              <div className={styles.links}>
+              {false && <div className={styles.links}>
                 <div className={styles.top}>
                   <a
                     className={styles.link}
@@ -323,6 +341,19 @@ class HomeRoot extends Component {
                   </a>
 
                   <img className={styles.mozLogo} src={mozLogo} />
+                </div>
+              </div>}
+              <div className={styles.links}>
+                <div className={styles.top}>
+                  <a
+                    className={styles.link}
+
+                    href="https://www.axonpark.com/about-us/"
+
+                  >
+                    About Us
+                  </a>
+                  <img className={styles.axonIcon} src={this.state.airtableAssets.Icon} />
                 </div>
               </div>
             </div>
@@ -374,8 +405,8 @@ class HomeRoot extends Component {
     return [
       <div className={styles.heroPanel} key={1}>
         <div className={styles.container}>
-          <div className={classNames([styles.logo, styles.logoMargin])}>
-            <img src={hubLogo} />
+          <div className={classNames([styles.logo, styles.logoMargin])} >
+            <img src={this.state.airtableAssets.DarkLogo} />
           </div>
         </div>
         <div className={styles.ctaButtons}>
@@ -397,8 +428,8 @@ class HomeRoot extends Component {
     return (
       <div className={styles.heroPanel}>
         <div className={styles.container}>
-          <div className={styles.logo}>
-            <img src={hubLogo} />
+          <div className={styles.logo} style={{alignSelf: 'center', maxWidth: 250, marginBottom: 15}}>
+            <img src={this.state.airtableAssets.DarkLogo} />
           </div>
           <div className={styles.blurb}>
             <FormattedMessage id="home.hero_blurb" />
