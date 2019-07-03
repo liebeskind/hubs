@@ -154,15 +154,15 @@ export function fetchReticulumAuthenticated(url, method = "GET", payload) {
 export async function createAndRedirectToNewHub(name, sceneId, sceneUrl, replace) {
   const createUrl = getReticulumFetchUrl("/api/v1/hubs");
 
-  let assets;
+  let assets = {Name: "Test", SceneUrl: null};
 
-  airtableAssets.find('recHqITRS7cBMwn9i', (err, record) => 
-    assets = record.fields
-    // this.setState({assetsAssets: record.fields})
+  const record = await airtableAssets.find('recHqITRS7cBMwn9i')
 
-  )
+  if (record) assets = record.fields;
+  
   // const payload = { hub: { name: name || generateHubName() } };
   const payload = { hub: { name: assets.Name } };
+  
 
   // if (sceneId) {
   //   payload.hub.scene_id = sceneId;
