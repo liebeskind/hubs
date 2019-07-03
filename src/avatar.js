@@ -4,6 +4,8 @@ console.log(`Hubs version: ${process.env.BUILD_VERSION || "?"}`);
 import "aframe";
 import "./utils/logging";
 
+import { airtableAssets, airtableAssetsInitialState } from '../airtable'
+
 import ReactDOM from "react-dom";
 import React from "react";
 import PropTypes from "prop-types";
@@ -38,12 +40,16 @@ class AvatarUI extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {airtableAssets: airtableAssetsInitialState};
   }
 
   componentDidMount() {
     this.props.store.addEventListener("statechanged", this.storeUpdated);
     this.refetchAvatar();
+
+    airtableAssets.find('recHqITRS7cBMwn9i', (err, record) => 
+       this.setState({airtableAssets: record.fields})
+    )
   }
 
   componentWillUnmount() {
@@ -97,7 +103,7 @@ class AvatarUI extends React.Component {
             </button>
           )}
         </div>
-        <img className={styles.logo} src={hubLogo} />
+        <img className={styles.logo} src={this.state.airtableAssets.DarkLogo} />
       </form>
     );
   }

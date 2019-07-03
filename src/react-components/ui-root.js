@@ -1403,6 +1403,7 @@ class UIRoot extends Component {
                 hubScene={this.props.hubScene}
                 baseUrl={baseUrl}
                 onLoadClicked={this.props.onPreloadLoadClicked}
+                logo={this.state.DarkLogo}
               />
             )}
 
@@ -1418,6 +1419,7 @@ class UIRoot extends Component {
                   store={this.props.store}
                   mediaSearchStore={this.props.mediaSearchStore}
                   avatarId={props.location.state.detail && props.location.state.detail.avatarId}
+                  logo={this.state.airtableAssets.DarkLogo}
                 />
               )}
             />
@@ -1486,6 +1488,7 @@ class UIRoot extends Component {
                   store={this.props.store}
                   mediaSearchStore={this.props.mediaSearchStore}
                   avatarId={props.location.state.detail && props.location.state.detail.avatarId}
+                  logo={this.state.airtableAssets.DarkLogo}
                 />
               )}
             />
