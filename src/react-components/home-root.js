@@ -343,6 +343,19 @@ class HomeRoot extends Component {
                   <img className={styles.mozLogo} src={mozLogo} />
                 </div>
               </div>}
+              <div className={styles.links}>
+                <div className={styles.top}>
+                  <a
+                    className={styles.link}
+
+                    href="https://www.axonpark.com/about-us/"
+
+                  >
+                    About Us
+                  </a>
+                  <img className={styles.axonIcon} src={this.state.airtableAssets.Icon} />
+                </div>
+              </div>
             </div>
           </div>
           {this.state.dialog}

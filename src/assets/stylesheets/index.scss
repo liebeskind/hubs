@@ -300,6 +300,19 @@ body {
       }
     }
 
+    :local(.axon-icon) {
+      width: 49px;
+      height: 49px;
+      margin-left: 8px;
+
+      @media (max-width: 768px), (max-height: 480px) {
+        width: 32px;
+        height: 32px;
+        margin: 0;
+        margin-top: 18px;
+      }
+    }
+
     :local(.top) {
       display: flex;
       justify-content: space-between;

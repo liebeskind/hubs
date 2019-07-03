@@ -944,7 +944,7 @@ class UIRoot extends Component {
 
           <span>{this.props.hubName}</span>
 
-          {this.props.hubChannel.canOrWillIfCreator("update_hub") ? (
+          {false && this.props.hubChannel.canOrWillIfCreator("update_hub") ? (
 
             <button
               className={entryStyles.renameButton}
@@ -958,9 +958,9 @@ class UIRoot extends Component {
             >
               {this.props.hubName}
             </button>
-          ) : (
+          ) : false ? (
             <span>{this.props.hubName}</span>
-          )}
+          ) : <span />}
           <button onClick={() => this.setState({ watching: true })} className={entryStyles.collapseButton}>
             <i>
               <FontAwesomeIcon icon={faTimes} />
@@ -1370,6 +1370,7 @@ class UIRoot extends Component {
       this.occupantCount() <= 1;
 
     const showChooseSceneButton =
+    false && 
       !showVREntryButton &&
       !entered &&
       !embed &&
@@ -1646,7 +1647,7 @@ class UIRoot extends Component {
                     [inviteStyles.inviteContainerInverted]: this.state.showShareDialog
                   })}
                 >
-                  {!embed &&
+                  {false && !embed &&
                     !showVREntryButton &&
                     !hasTopTip && (
                       <WithHoverSound>
