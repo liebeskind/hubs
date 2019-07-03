@@ -214,7 +214,7 @@ class HomeRoot extends Component {
             <div className={styles.headerContent}>
               <div className={styles.titleAndNav} onClick={() => (document.location = "/")}>
 
-                <div className={styles.links}>
+                {false && <div className={styles.links}>
                   <a href="/whats-new">
                     <FormattedMessage id="home.whats_new_link" />
                   </a>
@@ -226,6 +226,12 @@ class HomeRoot extends Component {
                   </a>
                   <a href="/spoke" rel="noreferrer noopener">
                     Spoke
+                  </a>
+                </div>}
+
+                <div className={styles.links}>
+                  <a href="https://www.axonpark.com/" target="_blank">
+                    Axon Park Home
                   </a>
                 </div>
 
@@ -267,14 +273,14 @@ class HomeRoot extends Component {
                   )}
                   <div>
 
-                    <div className={styles.secondaryLink}>
+                    {false && <div className={styles.secondaryLink}>
                       <a href="/link">
                         <FormattedMessage id="home.have_code" />
                       </a>
-                    </div>
+                    </div>}
 
 
-                    <div className={styles.secondaryLink}>
+                    {false && <div className={styles.secondaryLink}>
                       <div>
                         <FormattedMessage id="home.add_to_discord_1" />
                       </div>
@@ -285,7 +291,7 @@ class HomeRoot extends Component {
                       <div>
                         <FormattedMessage id="home.add_to_discord_3" />
                       </div>
-                    </div>
+                    </div>}
                   </div>
                 </div>
               )}

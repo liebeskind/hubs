@@ -1,4 +1,4 @@
-import {airtableAssets} from '../airtable'
+import {airtableMessages} from '../airtable'
 
 // let fields;
 
@@ -6,7 +6,12 @@ import {airtableAssets} from '../airtable'
 //    fields = record.fields
 // )
 
-let motto = 'Learn together, from anywhere.\nThe future of learning is virtual.\nEqualizing access to premier quality education.'
+console.log(airtableMessages)
+async () => {
+	await console.log(airtableMessages)
+}
+
+let motto = airtableMessages && airtableMessages.get('Motto') || 'Learn together, from anywhere.\nThe future of learning is virtual.\nEqualizing access to premier quality education.'
 
 
 export default {
