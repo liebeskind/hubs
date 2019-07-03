@@ -1,6 +1,6 @@
-@import 'shared';
-@import 'info-dialog';
-@import 'loader';
+@import "shared";
+@import "info-dialog";
+@import "loader";
 
 $header-section-width: 350px;
 
@@ -75,7 +75,7 @@ body {
         font-size: 1.4em;
         text-decoration: none;
         white-space: nowrap;
-        
+
         @media (max-width: 768px), (max-height: 480px) {
           margin-top: 0.5em;
         }
@@ -135,8 +135,7 @@ body {
   justify-content: center;
   position: relative;
   flex: 1;
-  background-image: url('../images/home-hero-background.jpg');
-  background-size: cover;
+  background: linear-gradient(125deg, #0de2b8, #0f8fff);
   padding: 1.5em;
 
   @media (max-width: 768px), (max-height: 480px) {
@@ -260,7 +259,7 @@ body {
       height: 24px;
     }
 
-    a { 
+    a {
       color: black;
       margin-right: 4px;
       margin-left: 2px;
@@ -331,4 +330,3 @@ body {
     }
   }
 }
-
