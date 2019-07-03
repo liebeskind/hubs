@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import copy from "copy-to-clipboard";
+import { airtableAssets, airtableAssetsInitialState } from '../airtable'
 import { IntlProvider, FormattedMessage, addLocaleData } from "react-intl";
 import en from "react-intl/locale-data/en";
 import screenfull from "screenfull";
@@ -220,6 +221,8 @@ class UIRoot extends Component {
 
     // An exit handler that discards event arguments and can be cleaned up.
     this.exitEventHandler = () => this.exit();
+
+    this.state.airtableAssets = airtableAssetsInitialState;
   }
 
   componentDidUpdate(prevProps) {
@@ -315,6 +318,10 @@ class UIRoot extends Component {
     if (this.props.forcedVREntryType && this.props.forcedVREntryType.endsWith("_now")) {
       setTimeout(() => this.handleForceEntry(), 2000);
     }
+
+    airtableAssets.find('recHqITRS7cBMwn9i', (err, record) => 
+       this.setState({airtableAssets: record.fields})
+    )
   }
 
   componentWillUnmount() {
@@ -1291,7 +1298,7 @@ class UIRoot extends Component {
     if (isExited) return this.renderExitedPane();
     if (isLoading) {
       return (
-        <Loader scene={this.props.scene} finished={this.state.noMoreLoadingUpdates} onLoaded={this.onLoadingFinished} />
+        <Loader loadingIcon={this.state.airtableAssets.Icon} scene={this.props.scene} finished={this.state.noMoreLoadingUpdates} onLoaded={this.onLoadingFinished} />
       );
     }
     if (this.props.showInterstitialPrompt) return this.renderInterstitialPrompt();

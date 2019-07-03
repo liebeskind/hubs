@@ -6,7 +6,7 @@ Airtable.configure({
 
 const base = Airtable.base('appIR0AlHDFG5WR8z');
 
-export const airtableAssetsInitialState = { DarkLogo: null, Name: null }
+export const airtableAssetsInitialState = { DarkLogo: null, Name: null, Icon: null }
 export const airtableAssets = base('Assets');
 
 export const airtableMessages = base('Messages').select({
