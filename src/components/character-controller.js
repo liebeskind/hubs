@@ -4,7 +4,6 @@ const CLAMP_VELOCITY = 0.01;
 const MAX_DELTA = 0.2;
 const EPS = 10e-6;
 const MAX_WARNINGS = 10;
-const PI_2 = Math.PI / 2;
 
 const NAV_ZONE = "character";
 
@@ -132,6 +131,12 @@ AFRAME.registerComponent("character-controller", {
       const root = this.el.object3D;
       const pivot = this.data.pivot.object3D;
       const distance = this.data.groundAcc * deltaSeconds;
+
+      const userinput = AFRAME.scenes[0].systems.userinput;
+      const userinputAngularVelocity = userinput.get(paths.actions.angularVelocity);
+      if (userinputAngularVelocity !== null && userinputAngularVelocity !== undefined) {
+        this.angularVelocity = userinputAngularVelocity;
+      }
       const rotationDelta = this.data.rotationSpeed * this.angularVelocity * deltaSeconds;
 
       pivot.updateMatrices();
@@ -140,7 +145,6 @@ AFRAME.registerComponent("character-controller", {
       startScale.copy(root.scale);
       startPos.copy(root.position);
 
-      const userinput = AFRAME.scenes[0].systems.userinput;
       if (userinput.get(paths.actions.snapRotateLeft)) {
         this.snapRotateLeft();
       }
@@ -267,9 +271,8 @@ AFRAME.registerComponent("character-controller", {
     velocity.x += dvx;
 
     if (this.data.fly) {
-      const pitch = pivot.rotation.x / PI_2;
-      velocity.y += dvz * -pitch;
-      velocity.z += dvz * (1.0 - pitch);
+      velocity.y += dvz * -Math.sin(pivot.rotation.x);
+      velocity.z += dvz * Math.cos(pivot.rotation.x);
     } else {
       velocity.z += dvz;
     }
@@ -281,7 +284,7 @@ AFRAME.registerComponent("character-controller", {
     if (Math.abs(velocity.x) < CLAMP_VELOCITY) {
       velocity.x = 0;
     }
-    if (this.data.fly && Math.abs(velocity.y) < CLAMP_VELOCITY) {
+    if (Math.abs(velocity.y) < CLAMP_VELOCITY) {
       velocity.y = 0;
     }
     if (Math.abs(velocity.z) < CLAMP_VELOCITY) {

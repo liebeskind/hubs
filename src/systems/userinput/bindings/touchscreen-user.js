@@ -18,6 +18,11 @@ const togglePen = "/vars/touchscreen/togglePen";
 export const touchscreenUserBindings = addSetsToBindings({
   [sets.global]: [
     {
+      src: {},
+      dest: { value: paths.actions.cursor.hideLine },
+      xform: xforms.always(true)
+    },
+    {
       src: { value: paths.device.touchscreen.pinch.delta },
       dest: { value: forward },
       xform: xforms.scale(0.25)
@@ -84,6 +89,11 @@ export const touchscreenUserBindings = addSetsToBindings({
       },
       dest: { value: paths.actions.cameraDelta },
       xform: xforms.add_vec2
+    },
+    {
+      src: { value: touchCamDelta },
+      dest: { value: paths.actions.lobbyCameraDelta },
+      xform: xforms.copy
     },
     {
       src: { value: paths.device.touchscreen.isTouchingGrabbable },

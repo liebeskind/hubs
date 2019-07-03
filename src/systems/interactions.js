@@ -1,6 +1,7 @@
 /* global AFRAME Ammo NAF */
 import { paths } from "./userinput/paths";
 import { SOUND_HOVER_OR_GRAB } from "./sound-effects-system";
+import { waitForDOMContentLoaded } from "../utils/async-utils";
 
 function findHandCollisionTargetForHand(body) {
   const driver = AFRAME.scenes[0].systems.physics.driver;
@@ -29,7 +30,7 @@ function findHandCollisionTargetForHand(body) {
 }
 
 const remoteHoverTargets = new Map();
-function findRemoteHoverTarget(object3D) {
+export function findRemoteHoverTarget(object3D) {
   if (!object3D) return null;
   const target = remoteHoverTargets.get(object3D);
   return target || findRemoteHoverTarget(object3D.parent);
@@ -61,19 +62,19 @@ AFRAME.registerSystem("interaction", {
   init: function() {
     this.options = {
       leftHand: {
-        entity: document.querySelector("#player-left-controller"),
+        entity: null,
         grabPath: paths.actions.leftHand.grab,
         dropPath: paths.actions.leftHand.drop,
         hoverFn: findHandCollisionTargetForHand
       },
       rightHand: {
-        entity: document.querySelector("#player-right-controller"),
+        entity: null,
         grabPath: paths.actions.rightHand.grab,
         dropPath: paths.actions.rightHand.drop,
         hoverFn: findHandCollisionTargetForHand
       },
       rightRemote: {
-        entity: document.querySelector("#cursor"),
+        entity: null,
         grabPath: paths.actions.cursor.grab,
         dropPath: paths.actions.cursor.drop,
         hoverFn: this.getRightRemoteHoverTarget
@@ -114,7 +115,12 @@ AFRAME.registerSystem("interaction", {
       }
     };
 
-    this.cursorController = document.querySelector("#cursor-controller");
+    waitForDOMContentLoaded().then(() => {
+      this.cursorController = document.querySelector("#cursor-controller");
+      this.options.leftHand.entity = document.querySelector("#player-left-controller");
+      this.options.rightHand.entity = document.querySelector("#player-right-controller");
+      this.options.rightRemote.entity = document.querySelector("#cursor");
+    });
   },
 
   getRightRemoteHoverTarget() {
@@ -165,12 +171,20 @@ AFRAME.registerSystem("interaction", {
       this.tickInteractor(this.options.rightRemote, this.state.rightRemote);
     }
 
-    const enableRightRemote =
-      !this.state.rightHand.hovered &&
-      !this.state.rightHand.held &&
-      !this.rightHandTeleporter.isTeleporting &&
-      !this.gazeTeleporter.isTeleporting;
+    const rightHandInteracting = this.state.rightHand.hovered || this.state.rightHand.held;
+    const rightHandTeleporting = this.rightHandTeleporter.isTeleporting || this.gazeTeleporter.isTeleporting;
+    const rightRemotePenIntersectingInVR =
+      this.el.sceneEl.is("vr-mode") &&
+      this.state.rightRemote.held &&
+      this.state.rightRemote.held.components &&
+      this.state.rightRemote.held.components.tags &&
+      this.state.rightRemote.held.components.tags.data.isPen &&
+      this.state.rightRemote.held.children[0].components.pen.intersection;
+
+    const enableRightRemote = !rightHandInteracting && !rightHandTeleporting && !rightRemotePenIntersectingInVR;
+
     this.cursorController.components["cursor-controller"].enabled = enableRightRemote;
+
     if (!enableRightRemote) {
       this.state.rightRemote.hovered = null;
     }

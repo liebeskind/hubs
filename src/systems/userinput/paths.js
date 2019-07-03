@@ -5,9 +5,11 @@ paths.actions.log = "/actions/log";
 paths.actions.toggleScreenShare = "/actions/toggleScreenShare";
 paths.actions.snapRotateLeft = "/actions/snapRotateLeft";
 paths.actions.snapRotateRight = "/actions/snapRotateRight";
+paths.actions.angularVelocity = "/actions/angularVelocity";
 paths.actions.logDebugFrame = "/actions/logDebugFrame";
 paths.actions.logInteractionState = "/actions/logInteractionState";
 paths.actions.cameraDelta = "/actions/cameraDelta";
+paths.actions.lobbyCameraDelta = "/actions/lobbyCameraDelta";
 paths.actions.characterAcceleration = "/actions/characterAcceleration";
 paths.actions.boost = "/actions/boost";
 paths.actions.startGazeTeleport = "/actions/startTeleport";
@@ -34,6 +36,7 @@ paths.actions.transformModifier = "/actions/transformModifier";
 paths.actions.rayObjectRotation = "/actions/rayObjectRotation";
 paths.actions.cursor = {};
 paths.actions.cursor.pose = "/actions/cursorPose";
+paths.actions.cursor.hideLine = "/actions/cursorHideLine";
 paths.actions.cursor.grab = "/actions/cursorGrab";
 paths.actions.cursor.drop = "/actions/cursorDrop";
 paths.actions.cursor.modDelta = "/actions/cursorModDelta";
@@ -57,6 +60,7 @@ paths.actions.rightHand.modDelta = "/actions/rightHandModDelta";
 paths.actions.rightHand.startDrawing = "/actions/rightHandStartDrawing";
 paths.actions.rightHand.stopDrawing = "/actions/rightHandStopDrawing";
 paths.actions.rightHand.undoDrawing = "/actions/rightHandUndoDrawing";
+paths.actions.rightHand.switchDrawMode = "/actions/rightHandSwitchDrawMode";
 paths.actions.rightHand.penNextColor = "/actions/rightHandPenNextColor";
 paths.actions.rightHand.penPrevColor = "/actions/rightHandPenPrevColor";
 paths.actions.rightHand.scalePenTip = "/actions/rightHandScalePenTip";
@@ -75,6 +79,7 @@ paths.actions.leftHand.modDelta = "/actions/leftHandModDelta";
 paths.actions.leftHand.startDrawing = "/actions/leftHandStartDrawing";
 paths.actions.leftHand.stopDrawing = "/actions/leftHandStopDrawing";
 paths.actions.leftHand.undoDrawing = "/actions/leftHandUndoDrawing";
+paths.actions.leftHand.switchDrawMode = "/actions/leftHandSwitchDrawMode";
 paths.actions.leftHand.penNextColor = "/actions/leftHandPenNextColor";
 paths.actions.leftHand.penPrevColor = "/actions/leftHandPenPrevColor";
 paths.actions.leftHand.scalePenTip = "/actions/leftHandScalePenTip";
@@ -147,6 +152,7 @@ paths.device.gamepad = gamepadIndex => ({
 
 const xbox = "/device/xbox/";
 paths.device.xbox = {
+  v: name => `/vars/xbox/${name}`,
   button: buttonName => ({
     pressed: `${xbox}button/${buttonName}/pressed`,
     touched: `${xbox}button/${buttonName}/touched`,
@@ -154,7 +160,8 @@ paths.device.xbox = {
   }),
   axis: axisName => {
     return `${xbox}axis/${axisName}`;
-  }
+  },
+  axesSum: `${xbox}axis/sum`
 };
 
 paths.device.oculusgo = {
@@ -228,6 +235,7 @@ paths.device.rightOculusTouch = {
   axis: axisName => {
     return `${rightOculusTouch}axis/${axisName}`;
   },
+  axesSum: `${rightOculusTouch}axis/sum`,
   pose: `${rightOculusTouch}pose`,
   matrix: `${rightOculusTouch}matrix`
 };
@@ -242,6 +250,7 @@ paths.device.leftOculusTouch = {
   axis: axisName => {
     return `${leftOculusTouch}axis/${axisName}`;
   },
+  axesSum: `${leftOculusTouch}axis/sum`,
   pose: `${leftOculusTouch}pose`,
   matrix: `${leftOculusTouch}matrix`
 };
@@ -256,6 +265,7 @@ paths.device.vive.left = {
   axis: axisName => {
     return `/device/vive/left/axis/${axisName}`;
   },
+  axesSum: "/device/vive/left/axis/sum",
   pose: `/device/vive/left/pose`,
   matrix: `/device/vive/left/matrix`
 };
@@ -268,6 +278,7 @@ paths.device.vive.right = {
   axis: axisName => {
     return `/device/vive/right/axis/${axisName}`;
   },
+  axesSum: "/device/vive/right/axis/sum",
   pose: `/device/vive/right/pose`,
   matrix: `/device/vive/right/matrix`
 };

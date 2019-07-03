@@ -11,8 +11,6 @@ import AvatarPreview from "./avatar-preview";
 import styles from "../assets/stylesheets/avatar-editor.scss";
 
 const AVATARS_API = "/api/v1/avatars";
-const BOT_PARENT_AVATAR =
-  location.hostname === "hubs.mozilla.com" || location.hostname === "smoke-hubs.mozilla.com" ? "gZ6gPvQ" : "xf9xkIY";
 
 export default class AvatarEditor extends Component {
   static propTypes = {
@@ -27,7 +25,7 @@ export default class AvatarEditor extends Component {
   };
 
   state = {
-    avatar: { name: "My Avatar", parent_avatar_id: BOT_PARENT_AVATAR, files: {} },
+    avatar: { name: "My Avatar", parent_avatar_listing_id: "basebot", files: {} },
     previewGltfUrl: null
   };
 
@@ -46,7 +44,7 @@ export default class AvatarEditor extends Component {
       Object.assign(this.inputFiles, avatar.files);
       this.setState({ avatar, previewGltfUrl: avatar.base_gltf_url });
     } else {
-      const { base_gltf_url } = await this.fetchAvatar(BOT_PARENT_AVATAR);
+      const { base_gltf_url } = await this.fetchAvatar("basebot");
       this.setState({ previewGltfUrl: base_gltf_url });
     }
   };
@@ -105,7 +103,9 @@ export default class AvatarEditor extends Component {
       });
     }
 
-    this.inputFiles.thumbnail = new File([await this.preview.snapshot()], "thumbnail.png", { type: "image/png" });
+    this.inputFiles.thumbnail = new File([await this.preview.getWrappedInstance().snapshot()], "thumbnail.png", {
+      type: "image/png"
+    });
 
     const filesToUpload = ["gltf", "bin", "base_map", "emissive_map", "normal_map", "orm_map", "thumbnail"].filter(
       k => this.inputFiles[k] === null || this.inputFiles[k] instanceof File
@@ -277,6 +277,7 @@ export default class AvatarEditor extends Component {
               <div className="form-body">
                 {debug && this.textField("avatar_id", "Avatar ID", true)}
                 {debug && this.textField("parent_avatar_id", "Parent Avatar ID")}
+                {debug && this.textField("parent_avatar_listing_id", "Parent Avatar Listing ID")}
                 {this.textField("name", "Name", false, true)}
                 {debug && this.textarea("description", "Description")}
                 {debug && this.fileField("glb", "Avatar GLB", "model/gltf+binary,.glb")}
