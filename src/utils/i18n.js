@@ -1,4 +1,4 @@
-import localeData from "../everyspace/messages.js";
+import localeData from "../axonpark/messages.js";
 // import localeData from "../assets/translations.data.json";
 const navigatorLang = ((navigator.languages && navigator.languages[0]) || navigator.language || navigator.userLanguage)
   .toLowerCase()

@@ -425,7 +425,7 @@ AFRAME.registerComponent("media-video", {
     const file = new File([blob], "snap.png", TYPE_IMG_PNG);
 
     this.localSnapCount++;
-    const { entity } = spawnMediaAround(this.el, file, this.localSnapCount);
+    const { entity } = spawnMediaAround(this.el, file, "video-snapshot", this.localSnapCount);
     entity.addEventListener("image-loaded", this.onSnapImageLoaded, ONCE_TRUE);
   },
 
@@ -718,10 +718,14 @@ AFRAME.registerComponent("media-image", {
   schema: {
     src: { type: "string" },
     projection: { type: "string", default: "flat" },
-    contentType: { type: "string" }
+    contentType: { type: "string" },
+    batch: { default: true }
   },
 
   remove() {
+    if (this.data.batch && this.mesh) {
+      this.el.sceneEl.systems["hubs-systems"].batchManagerSystem.removeObject(this.mesh);
+    }
     if (this._hasRetainedTexture) {
       textureCache.release(this.data.src);
       this._hasRetainedTexture = false;
@@ -804,6 +808,10 @@ AFRAME.registerComponent("media-image", {
 
     if (projection === "flat") {
       scaleToAspectRatio(this.el, ratio);
+    }
+
+    if (this.data.batch) {
+      this.el.sceneEl.systems["hubs-systems"].batchManagerSystem.addObject(this.mesh);
     }
 
     this.el.emit("image-loaded", { src: this.data.src, projection: projection });

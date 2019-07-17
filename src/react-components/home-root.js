@@ -45,6 +45,7 @@ class HomeRoot extends Component {
     authVerify: PropTypes.bool,
     authTopic: PropTypes.string,
     authToken: PropTypes.string,
+    authPayload: PropTypes.string,
     authOrigin: PropTypes.string,
     listSignup: PropTypes.bool,
     report: PropTypes.bool,
@@ -95,7 +96,7 @@ class HomeRoot extends Component {
   async verifyAuth() {
     const authChannel = new AuthChannel(this.props.store);
     authChannel.setSocket(await connectToReticulum());
-    await authChannel.verifyAuthentication(this.props.authTopic, this.props.authToken);
+    await authChannel.verifyAuthentication(this.props.authTopic, this.props.authToken, this.props.authPayload);
     this.setState({ signedIn: true, email: this.props.store.state.credentials.email });
   }
 
