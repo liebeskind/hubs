@@ -548,12 +548,21 @@ class UIRoot extends Component {
 
   fetchAudioTrack = async constraints => {
     if (this.state.audioTrack) {
+      console.log("Stopping existing audio track.");
       this.state.audioTrack.stop();
     }
 
     try {
       const mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
       this.setState({ audioTrack: mediaStream.getAudioTracks()[0] });
+
+      // TODO remove, being used to diagnose issues with Oculus Browser
+      mediaStream.getAudioTracks()[0].addEventListener("ended", e => {
+        console.log("Audio stream track ended without calling stop, event info:");
+        console.log(e);
+        console.trace();
+      });
+
       return true;
     } catch (e) {
       // Error fetching audio track, most likely a permission denial.
