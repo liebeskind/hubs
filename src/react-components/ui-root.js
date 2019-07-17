@@ -556,12 +556,15 @@ class UIRoot extends Component {
       const mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
       this.setState({ audioTrack: mediaStream.getAudioTracks()[0] });
 
-      // TODO remove, being used to diagnose issues with Oculus Browser
-      mediaStream.getAudioTracks()[0].addEventListener("ended", e => {
-        console.log("Audio stream track ended without calling stop, event info:");
-        console.log(e);
-        console.trace();
-      });
+      if (/Oculus/.test(navigator.userAgent)) {
+        // TODO remove, being used to diagnose issues with Oculus Browser
+        mediaStream.getAudioTracks()[0].addEventListener("ended", async () => {
+          console.warn(
+            "Oculus Browser 6 bug hit: Audio stream track ended without calling stop. Recreating audio stream."
+          );
+          NAF.connection.adapter.setLocalMediaStream(await navigator.mediaDevices.getUserMedia(constraints));
+        });
+      }
 
       return true;
     } catch (e) {
