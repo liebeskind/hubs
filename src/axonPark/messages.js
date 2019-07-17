@@ -6,7 +6,6 @@ import {airtableMessages} from '../airtable'
 //    fields = record.fields
 // )
 
-console.log(airtableMessages)
 async () => {
 	await console.log(airtableMessages)
 }
