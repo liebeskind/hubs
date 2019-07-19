@@ -18,12 +18,12 @@ AFRAME.registerComponent("in-world-hud", {
       this.mic.setAttribute("icon-button", "active", this.el.sceneEl.is("muted"));
       this.pen.setAttribute("icon-button", "active", this.el.sceneEl.is("pen"));
       this.cameraBtn.setAttribute("icon-button", "active", this.el.sceneEl.is("camera"));
-      this.flyBtn.setAttribute("icon-button", "active", this.el.sceneEl.is("fly"));
+      this.flyBtn.setAttribute("icon-button", "active", this.el.sceneEl.is("flying"));
     };
     this.updateButtonStates();
 
     this.onStateChange = evt => {
-      if (!(evt.detail === "muted" || evt.detail === "frozen" || evt.detail === "pen" || evt.detail === "camera"))
+      if (!(evt.detail === "muted" || evt.detail === "frozen" || evt.detail === "pen" || evt.detail === "camera" || evt.detail === "flying"))
         return;
       this.updateButtonStates();
     };
@@ -46,10 +46,10 @@ AFRAME.registerComponent("in-world-hud", {
     };
 
     this.onFlyClick = () => {
-      // this.el.emit("action_toggle_fly_mode");
-      const playerRig = document.querySelector("#player-rig");
-      const enabled = playerRig.getAttribute("character-controller", "fly").fly; 
-      playerRig.setAttribute("character-controller", "fly", !enabled);  
+      this.el.emit("action_fly");
+      // const playerRig = document.querySelector("#player-rig");
+      // const enabled = playerRig.getAttribute("character-controller", "fly").fly; 
+      // playerRig.setAttribute("character-controller", "fly", !enabled);  
     };
 
     this.onInviteClick = () => {
