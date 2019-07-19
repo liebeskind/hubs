@@ -47,7 +47,7 @@
     "aframe-physics-system": "github:infinitelee/aframe-physics-system#feature/heightfields",
     "aframe-rounded": "^1.0.3",
     "aframe-slice9-component": "^1.0.0",
-    "airtable": "^0.6.0",
+    "airtable": "^0.7.0",
     "ammo.js": "github:mozillareality/ammo.js#hubs/master",
     "animejs": "github:mozillareality/anime#hubs/master",
     "cannon": "github:donmccurdy/cannon.js#v0.6.2-dev1",

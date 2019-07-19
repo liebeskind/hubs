@@ -20,7 +20,7 @@ AFRAME.registerComponent("character-controller", {
     pivot: { type: "selector" },
     snapRotationDegrees: { default: THREE.Math.DEG2RAD * 45 },
     rotationSpeed: { default: -3 },
-    fly: { default: false }
+    fly: { default: true }
   },
 
   init: function() {
