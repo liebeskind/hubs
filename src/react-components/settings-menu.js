@@ -12,6 +12,7 @@ import { faPencilAlt } from "@fortawesome/free-solid-svg-icons/faPencilAlt";
 import { faInfoCircle } from "@fortawesome/free-solid-svg-icons/faInfoCircle";
 import { faBars } from "@fortawesome/free-solid-svg-icons/faBars";
 import { faPlus } from "@fortawesome/free-solid-svg-icons/faPlus";
+import { faMinus } from "@fortawesome/free-solid-svg-icons/faMinus";
 import { faVideo } from "@fortawesome/free-solid-svg-icons/faVideo";
 import { showFullScreenIfAvailable } from "../utils/fullscreen";
 import LeaveRoomDialog from "./leave-room-dialog.js";
@@ -30,7 +31,8 @@ export default class SettingsMenu extends Component {
     hubChannel: PropTypes.object,
     performConditionalSignIn: PropTypes.func,
     showNonHistoriedDialog: PropTypes.func,
-    pushHistoryState: PropTypes.func
+    pushHistoryState: PropTypes.func,
+    toggleFlyMode: PropTypes.func
   };
 
   state = {
@@ -48,11 +50,19 @@ export default class SettingsMenu extends Component {
   renderExpandedMenu() {
     const rowClasses = classNames([styles.row, styles.settingsRow]);
     const rowHeader = classNames([styles.row, styles.settingsRow, styles.rowHeader]);
-    const showRoomSettings = !!this.props.hubChannel.canOrWillIfCreator("update_hub");
-    const showCloseRoom = !!this.props.hubChannel.canOrWillIfCreator("close_hub");
-    const showRoomInfo = !!this.props.hubScene;
-    const showRoomSection = showRoomSettings || showRoomInfo || showCloseRoom;
+    // const showRoomSettings = !!this.props.hubChannel.canOrWillIfCreator("update_hub");
+    const showRoomSettings = false;
+    // const showCloseRoom = !!this.props.hubChannel.canOrWillIfCreator("close_hub");
+    const showCloseRoom = false;
+    // const showRoomInfo = !!this.props.hubScene;
+    const showRoomInfo = false;
+    // const showRoomSection = showRoomSettings || showRoomInfo || showCloseRoom;
+    const showRoomSection = false;
     const showStreamerMode = this.props.scene.is("entered") && !!this.props.hubChannel.canOrWillIfCreator("kick_users");
+
+    const playerRig = document.querySelector("#player-rig");
+    const flyEnabled = playerRig.getAttribute("character-controller", "fly").fly;
+    console.log(flyEnabled)
 
     // Draw self first
     return (
@@ -79,6 +89,24 @@ export default class SettingsMenu extends Component {
               </div>
             </div>
             <div className={rowClasses}>
+                <div className={styles.icon}>
+                  <i>
+                    <FontAwesomeIcon icon={faStar} />
+                  </i>
+                </div>
+                <div className={styles.listItem}>
+                  <div
+                    className={styles.listItemLink}
+                    onClick={() => {
+                      this.props.toggleFlyMode(!flyEnabled);
+                      this.setState({ expanded: false });
+                    }}
+                  >
+                    {flyEnabled ? "Disable" : "Enable"} Fly Mode
+                  </div>
+                </div>
+              </div>
+            {false ? <div className={rowClasses}>
               <div className={styles.icon}>
                 <i>
                   <FontAwesomeIcon icon={faStar} />
@@ -101,7 +129,7 @@ export default class SettingsMenu extends Component {
                   <FormattedMessage id="settings.favorites" />
                 </div>
               </div>
-            </div>
+            </div> : <span />}
             {showRoomSection && (
               <div className={rowHeader}>
                 <FormattedMessage id="settings.row-room" />
@@ -212,7 +240,7 @@ export default class SettingsMenu extends Component {
             <div className={rowClasses}>
               <div className={styles.icon}>
                 <i>
-                  <FontAwesomeIcon icon={faPlus} />
+                  <FontAwesomeIcon icon={faDoorClosed} />
                 </i>
               </div>
               <div className={styles.listItem}>
@@ -227,7 +255,7 @@ export default class SettingsMenu extends Component {
                     this.setState({ expanded: false });
                   }}
                 >
-                  <FormattedMessage id="settings.create-room" />
+                  Leave Room
                 </a>
               </div>
             </div>
@@ -260,7 +288,7 @@ export default class SettingsMenu extends Component {
             ) : (
               <div />
             )}
-            <div className={classNames([styles.bottomLinksMain])}>
+            {false && <div className={classNames([styles.bottomLinksMain])}>
               <a href="/whats-new" target="_blank" rel="noreferrer noopener">
                 <FormattedMessage id="settings.whats-new" />
               </a>
@@ -276,8 +304,8 @@ export default class SettingsMenu extends Component {
               <a href="https://github.com/mozilla/hubs/wiki/Hubs-Controls" target="_blank" rel="noreferrer noopener">
                 <FormattedMessage id="settings.controls" />
               </a>
-            </div>
-            <div className={classNames([styles.bottomLinks])}>
+            </div>}
+            {false && <div className={classNames([styles.bottomLinks])}>
               <a href="https://github.com/mozilla/hubs/wiki/Hubs-Features" target="_blank" rel="noreferrer noopener">
                 <FormattedMessage id="settings.features" />
               </a>
@@ -311,7 +339,7 @@ export default class SettingsMenu extends Component {
               >
                 <FormattedMessage id="settings.privacy" />
               </a>
-            </div>
+            </div>}
           </div>
         </div>
       </div>

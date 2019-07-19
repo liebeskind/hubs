@@ -771,6 +771,12 @@ class UIRoot extends Component {
     }
   };
 
+  toggleFlyMode = enable => {
+    const playerRig = document.querySelector("#player-rig");
+    playerRig.setAttribute("character-controller", "fly", enable);  
+  }
+  
+
   renderDialog = (DialogClass, props = {}) => <DialogClass {...{ onClose: this.closeDialog, ...props }} />;
 
   showSignInDialog = () => {
@@ -993,7 +999,7 @@ class UIRoot extends Component {
             </i>
           </button>
 
-          <button
+          {false && <button
             onClick={() => this.toggleFavorited()}
             className={classNames({
               [entryStyles.entryFavoriteButton]: true,
@@ -1004,7 +1010,7 @@ class UIRoot extends Component {
             <i title="Favorite">
               <FontAwesomeIcon icon={faStar} />
             </i>
-          </button>
+          </button>}
         </div>
 
         <div className={entryStyles.roomSubtitle}>
@@ -1835,6 +1841,7 @@ class UIRoot extends Component {
                   performConditionalSignIn={this.props.performConditionalSignIn}
                   showNonHistoriedDialog={this.showNonHistoriedDialog}
                   pushHistoryState={this.pushHistoryState}
+                  toggleFlyMode={this.toggleFlyMode}
                 />
               )}
             {!entered && !streaming && !isMobile && streamerName && <SpectatingLabel name={streamerName} />}
@@ -1880,7 +1887,7 @@ class UIRoot extends Component {
                   </div>
                 )}
 
-                {!streaming && (
+                {!streaming && false && (
                   <button
                     onClick={() => this.toggleFavorited()}
                     className={classNames({
