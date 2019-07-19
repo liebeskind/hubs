@@ -47,9 +47,9 @@ AFRAME.registerComponent("in-world-hud", {
 
     this.onFlyClick = () => {
       this.el.emit("action_fly");
-      // const playerRig = document.querySelector("#player-rig");
-      // const enabled = playerRig.getAttribute("character-controller", "fly").fly; 
-      // playerRig.setAttribute("character-controller", "fly", !enabled);  
+      const playerRig = document.querySelector("#player-rig");
+      const enabled = playerRig.getAttribute("character-controller", "fly").fly; 
+      playerRig.setAttribute("character-controller", "fly", !enabled);  
     };
 
     this.onInviteClick = () => {
