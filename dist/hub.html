@@ -39,7 +39,7 @@
 
       gtag('config', 'UA-140675381-1');
     </script>
-    <meta http-equiv="origin-trial" data-feature="WebVR (For Chrome M62+)" data-expires="2018-09-11" content="AtOSmCIwReA1cq9L756ii6hccpiM4ObrwF0bYDmr1nNzMQi2zTjoN1puufPHt+QUwcx0F6rbLEPj/YrQanRQUA8AAABVeyJvcmlnaW4iOiJodHRwczovL2h1YnMubW96aWxsYS5jb206NDQzIiwiZmVhdHVyZSI6IldlYlZSMS4xTTYyIiwiZXhwaXJ5IjoxNTM2NjI0MDAwfQ=="><link href="/assets/stylesheets/vendor-78428383224983c13656.css" rel="stylesheet"><link href="/assets/stylesheets/engine-d6f52a1f7b0d4bfc0fed.css" rel="stylesheet"><link href="/assets/stylesheets/hub-a837802ebfe9e2c7d011.css" rel="stylesheet"><script type="text/javascript" src="/assets/js/vendor-0113294fb2b6a8ada290.js"></script><script type="text/javascript" src="/assets/js/engine-75908e70985a7cf631aa.js"></script><script type="text/javascript" src="/assets/js/hub-a0a6d061cbde00ff3b48.js"></script></head>
+    <meta http-equiv="origin-trial" data-feature="WebVR (For Chrome M62+)" data-expires="2018-09-11" content="AtOSmCIwReA1cq9L756ii6hccpiM4ObrwF0bYDmr1nNzMQi2zTjoN1puufPHt+QUwcx0F6rbLEPj/YrQanRQUA8AAABVeyJvcmlnaW4iOiJodHRwczovL2h1YnMubW96aWxsYS5jb206NDQzIiwiZmVhdHVyZSI6IldlYlZSMS4xTTYyIiwiZXhwaXJ5IjoxNTM2NjI0MDAwfQ=="><link href="/assets/stylesheets/vendor-78428383224983c13656.css" rel="stylesheet"><link href="/assets/stylesheets/engine-d6f52a1f7b0d4bfc0fed.css" rel="stylesheet"><link href="/assets/stylesheets/hub-a54e2b7db43ec329118a.css" rel="stylesheet"><script type="text/javascript" src="/assets/js/vendor-0113294fb2b6a8ada290.js"></script><script type="text/javascript" src="/assets/js/engine-14375a83c84286d302ea.js"></script><script type="text/javascript" src="/assets/js/hub-5f81973a41fc74439414.js"></script></head>
 
 <body>
     <a-scene
@@ -54,6 +54,8 @@
         networked-scene="adapter: janus; audio: true; debug: true; connectOnLoad: false;"
         mute-mic="eventSrc: a-scene; toggleEvents: action_mute"
         action-to-event__mute="path: /actions/muteMic; event: action_mute;"
+        action-to-event__fly="path: /actions/toggleFlying; event: action_fly;"
+        toggle-flying="eventSrc: a-scene; toggleEvents: action_fly"
         freeze-controller="toggleEvent: action_freeze"
         personal-space-bubble="debug: false;"
         rotate-selected-object
@@ -78,6 +80,10 @@
             <img id="camera-off-hover" crossorigin="anonymous" src="/assets/hud/camera_off-hover-861183f20f53e492d68b43c09543fc92.png">
             <img id="camera-on" crossorigin="anonymous" src="/assets/hud/camera_on-3de967ef074109d802254417b420806d.png">
             <img id="camera-on-hover" crossorigin="anonymous" src="/assets/hud/camera_on-hover-5d9d8bff77e56431f8e03e56d6c1a75f.png">
+            <img id="fly-off" crossorigin="anonymous" src="/assets/hud/fly_off-5a86d30c626d89876d27c69ee9d817fa.png">
+            <img id="fly-off-hover" crossorigin="anonymous" src="/assets/hud/fly_off-hover-2e72e7df739c1ec085824a9c2de40fd4.png">
+            <img id="fly-on" crossorigin="anonymous" src="/assets/hud/fly_on-cbbbc4c29388eb09fcdaaf0a45ca93e4.png">
+            <img id="fly-on-hover" crossorigin="anonymous" src="/assets/hud/fly_on-hover-e056d693d9b3ecdb59db67c56e53acdd.png">
             <img id="snap-camera" crossorigin="anonymous" src="/assets/images/snap_camera-f1a64a6992a76c97b56f38be32c8a3e8.png">
             <img id="camera" crossorigin="anonymous" src="/assets/images/camera-f1a64a6992a76c97b56f38be32c8a3e8.png">
             <img id="close-white" crossorigin="anonymous" src="/assets/images/close-white-a1f3c2104b6b2ddd80c54bf1e92de902.png">
@@ -775,6 +781,16 @@
                         scale="0.1 0.1 0.1"
                         position="0.28 0 0.001"
                         class="hud camera-btn"
+                        material="alphaTest:0.1;"
+                    ></a-entity>
+                    <a-entity
+                        is-remote-hover-target
+                        tags="singleActionButton: true"
+                        sprite
+                        icon-button="tooltip: #hud-tooltip; tooltipText: Enable Flying; activeTooltipText: Disable Flying; image: fly_off.png; hoverImage: fly_off-hover.png; activeImage: fly_on.png; activeHoverImage: fly_on-hover.png"
+                        scale="0.1 0.1 0.1"
+                        position="0.39 0 0.001"
+                        class="hud fly-btn"
                         material="alphaTest:0.1;"
                     ></a-entity>
                 </a-entity>
