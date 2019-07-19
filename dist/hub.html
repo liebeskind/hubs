@@ -39,7 +39,7 @@
 
       gtag('config', 'UA-140675381-1');
     </script>
-    <meta http-equiv="origin-trial" data-feature="WebVR (For Chrome M62+)" data-expires="2018-09-11" content="AtOSmCIwReA1cq9L756ii6hccpiM4ObrwF0bYDmr1nNzMQi2zTjoN1puufPHt+QUwcx0F6rbLEPj/YrQanRQUA8AAABVeyJvcmlnaW4iOiJodHRwczovL2h1YnMubW96aWxsYS5jb206NDQzIiwiZmVhdHVyZSI6IldlYlZSMS4xTTYyIiwiZXhwaXJ5IjoxNTM2NjI0MDAwfQ=="><link href="/assets/stylesheets/engine-d6f52a1f7b0d4bfc0fed.css" rel="stylesheet"><link href="/assets/stylesheets/hub-3fc2146d5386c331b8e5.css" rel="stylesheet"><script type="text/javascript" src="/assets/js/vendor-a74e22a8f350fabf77a0.js"></script><script type="text/javascript" src="/assets/js/engine-7dd6f7256a5ea1608924.js"></script><script type="text/javascript" src="/assets/js/hub-b03de590c15e08e5f071.js"></script></head>
+    <meta http-equiv="origin-trial" data-feature="WebVR (For Chrome M62+)" data-expires="2018-09-11" content="AtOSmCIwReA1cq9L756ii6hccpiM4ObrwF0bYDmr1nNzMQi2zTjoN1puufPHt+QUwcx0F6rbLEPj/YrQanRQUA8AAABVeyJvcmlnaW4iOiJodHRwczovL2h1YnMubW96aWxsYS5jb206NDQzIiwiZmVhdHVyZSI6IldlYlZSMS4xTTYyIiwiZXhwaXJ5IjoxNTM2NjI0MDAwfQ=="><link href="/assets/stylesheets/vendor-78428383224983c13656.css" rel="stylesheet"><link href="/assets/stylesheets/engine-d6f52a1f7b0d4bfc0fed.css" rel="stylesheet"><link href="/assets/stylesheets/hub-a837802ebfe9e2c7d011.css" rel="stylesheet"><script type="text/javascript" src="/assets/js/vendor-0113294fb2b6a8ada290.js"></script><script type="text/javascript" src="/assets/js/engine-75908e70985a7cf631aa.js"></script><script type="text/javascript" src="/assets/js/hub-a0a6d061cbde00ff3b48.js"></script></head>
 
 <body>
     <a-scene
@@ -49,7 +49,7 @@
         hubs-systems
         capture-system
         class="grab-cursor"
-        renderer="antialias: true; colorManagement: true; sortObjects: true; physicallyCorrectLights: true; alpha: false; webgl2: true; multiview: true;"
+        renderer="antialias: true; colorManagement: true; sortObjects: true; physicallyCorrectLights: true; alpha: false; webgl2: true; multiview: false;"
         shadow="type: pcfsoft"
         networked-scene="adapter: janus; audio: true; debug: true; connectOnLoad: false;"
         mute-mic="eventSrc: a-scene; toggleEvents: action_mute"
@@ -562,6 +562,14 @@
                 </a-entity>
             </template>
 
+            <template id="photo-hover-menu">
+                <a-entity class="ui interactable-ui hover-container" visible="false">
+                    <a-entity mixin="rounded-twitter-text-action-button ui" is-remote-hover-target tags="singleActionButton: true; isHoverMenuChild: true;" tweet-media-button position="0 0.285 0.01">
+                        <a-entity text="value:tweet; width:1.5; align:center;" text-raycast-hack position="0 0 0.02"></a-entity>
+                    </a-entity>
+                </a-entity>
+            </template>
+
             <template id="video-unmute">
                 <a-entity
                     class="ui interactable-ui hover-container unmute-ui"
@@ -643,10 +651,28 @@
                     opacity: 1.0;
                     src: #action-button"
             ></a-mixin>
+
+            <a-mixin id="rounded-twitter-text-action-button"
+                text-button="
+                    textHoverColor: #fff;
+                    textColor: #fff;
+                    backgroundColor: #1da1f2;
+                    backgroundHoverColor: #2db1ff;
+                    "
+                slice9="
+                    width: 0.45;
+                    height: 0.2;
+                    left: 64;
+                    top: 64;
+                    right: 66;
+                    bottom: 66;
+                    opacity: 1.0;
+                    src: #button"
+            ></a-mixin>
         </a-assets>
 
         <!-- Interactables -->
-        <a-entity id="media-counter" networked-counter="max: 10;"></a-entity>
+        <a-entity id="media-counter" networked-counter="max: 20;"></a-entity>
 
         <a-entity id="pen-counter" networked-counter="max: 10;"></a-entity>
 
