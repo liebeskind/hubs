@@ -14,6 +14,7 @@ const browser = detect();
 class TopHUD extends Component {
   static propTypes = {
     muted: PropTypes.bool,
+    flyingEnabled: PropTypes.bool,
     isCursorHoldingPen: PropTypes.bool,
     hasActiveCamera: PropTypes.bool,
     frozen: PropTypes.bool,
@@ -190,6 +191,11 @@ class TopHUD extends Component {
               className={cx(styles.iconButton, styles.camera, { [styles.active]: this.props.hasActiveCamera })}
               title={"Camera"}
               onClick={this.props.onSpawnCamera}
+            />
+            <div
+              className={cx(styles.iconButton, styles.fly, { [styles.active]: this.props.flyingEnabled })}
+              title={this.props.flyingEnabled ? "Disable Flying" : "Enable Flying"}
+              onClick={()=>this.props.onToggleFlying(!this.props.flyingEnabled)}
             />
           </div>
         )}

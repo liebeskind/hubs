@@ -1,4 +1,4 @@
-@import 'shared';
+@import "shared";
 
 :local(.container) {
   position: absolute;
@@ -43,15 +43,15 @@
 
     width: 350px;
 
-    @media(max-width: 465px) {
+    @media (max-width: 465px) {
       width: 207px;
     }
 
-    @media(max-width: 420px) {
+    @media (max-width: 420px) {
       width: 189px;
     }
 
-    @media(max-width: 420px) {
+    @media (max-width: 420px) {
       width: 189px;
     }
 
@@ -65,14 +65,15 @@
       top: -5px;
     }
 
-    :local(.attach_video_share_mode), :local(.attach_video_share_failed) {
+    :local(.attach_video_share_mode),
+    :local(.attach_video_share_failed) {
       left: 90px;
 
-      @media(max-width: 465px) {
+      @media (max-width: 465px) {
         left: 27px;
       }
 
-      @media(max-width: 420px) {
+      @media (max-width: 420px) {
         left: 26px;
       }
     }
@@ -80,11 +81,11 @@
     :local(.attach_pen_mode) {
       right: 143px;
 
-      @media(max-width: 465px) {
+      @media (max-width: 465px) {
         right: 76px;
       }
 
-      @media(max-width: 420px) {
+      @media (max-width: 420px) {
         right: 71px;
       }
     }
@@ -92,11 +93,11 @@
     :local(.attach_mute_mode) {
       left: 143px;
 
-      @media(max-width: 465px) {
+      @media (max-width: 465px) {
         left: 76px;
       }
 
-      @media(max-width: 420px) {
+      @media (max-width: 420px) {
         left: 71px;
       }
     }
@@ -181,11 +182,11 @@
   margin: 0px 6px;
   border: 0;
 
-  @media(max-width: 465px) {
+  @media (max-width: 465px) {
     margin: 0px 4px;
   }
 
-  @media(max-width: 420px) {
+  @media (max-width: 420px) {
     margin: 0px 2px;
   }
 }
@@ -206,6 +207,32 @@
 }
 
 // This roundabout pattern is the only way I can get hovers to not happen on touch devices
+:local(.iconButton.fly) {
+  background-image: url(../hud/fly_off.png);
+}
+:local(.iconButton.fly:hover) {
+  @media (pointer: fine) {
+    background-image: url(../hud/fly_off-hover.png);
+  }
+
+  @media (pointer: coarse) {
+    background-image: url(../hud/fly_off.png);
+  }
+}
+
+:local(.iconButton.fly.active) {
+  background-image: url(../hud/fly_on.png);
+}
+:local(.iconButton.fly.active:hover) {
+  @media (pointer: fine) {
+    background-image: url(../hud/fly_on-hover.png);
+  }
+
+  @media (pointer: coarse) {
+    background-image: url(../hud/fly_on.png);
+  }
+}
+
 :local(.iconButton.mute) {
   background-image: url(../hud/mute_off.png);
 }
@@ -229,7 +256,7 @@
 
   @media (pointer: coarse) {
     background-image: url(../hud/mute_on.png);
-  }  
+  }
 }
 
 :local(.iconButton.pen) {
@@ -255,7 +282,7 @@
 
   @media (pointer: coarse) {
     background-image: url(../hud/pen_on.png);
-  }  
+  }
 }
 
 :local(.iconButton.camera) {
@@ -281,7 +308,7 @@
 
   @media (pointer: coarse) {
     background-image: url(../hud/camera_on.png);
-  }  
+  }
 }
 
 :local(.iconButton.freeze) {

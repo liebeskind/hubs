@@ -196,6 +196,7 @@ class UIRoot extends Component {
     secondsRemainingBeforeAutoExit: Infinity,
 
     muted: false,
+    flyingEnabled: false,
     frozen: false,
 
     exited: false,
@@ -774,6 +775,7 @@ class UIRoot extends Component {
   toggleFlyMode = enable => {
     const playerRig = document.querySelector("#player-rig");
     playerRig.setAttribute("character-controller", "fly", enable);  
+    this.setState({flyingEnabled: enable})
   }
   
 
@@ -1861,6 +1863,8 @@ class UIRoot extends Component {
                   isCursorHoldingPen={this.props.isCursorHoldingPen}
                   hasActiveCamera={this.props.hasActiveCamera}
                   onToggleMute={this.toggleMute}
+                  onToggleFlying={this.toggleFlyMode}
+                  flyingEnabled={this.state.flyingEnabled}
                   onToggleFreeze={this.toggleFreeze}
                   onSpawnPen={this.spawnPen}
                   onSpawnCamera={() => this.props.scene.emit("action_toggle_camera")}

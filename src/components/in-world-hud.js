@@ -12,11 +12,13 @@ AFRAME.registerComponent("in-world-hud", {
     this.cameraBtn = this.el.querySelector(".camera-btn");
     this.inviteBtn = this.el.querySelector(".invite-btn");
     this.background = this.el.querySelector(".bg");
+    this.flyBtn = this.el.querySelector(".fly-btn");
 
     this.updateButtonStates = () => {
       this.mic.setAttribute("icon-button", "active", this.el.sceneEl.is("muted"));
       this.pen.setAttribute("icon-button", "active", this.el.sceneEl.is("pen"));
       this.cameraBtn.setAttribute("icon-button", "active", this.el.sceneEl.is("camera"));
+      this.flyBtn.setAttribute("icon-button", "active", this.el.sceneEl.is("fly"));
     };
     this.updateButtonStates();
 
@@ -43,6 +45,13 @@ AFRAME.registerComponent("in-world-hud", {
       this.el.emit("action_toggle_camera");
     };
 
+    this.onFlyClick = () => {
+      // this.el.emit("action_toggle_fly_mode");
+      const playerRig = document.querySelector("#player-rig");
+      const enabled = playerRig.getAttribute("character-controller", "fly").fly; 
+      playerRig.setAttribute("character-controller", "fly", !enabled);  
+    };
+
     this.onInviteClick = () => {
       this.el.emit("action_invite");
     };
@@ -56,6 +65,7 @@ AFRAME.registerComponent("in-world-hud", {
     this.spawn.object3D.addEventListener("interact", this.onSpawnClick);
     this.pen.object3D.addEventListener("interact", this.onPenClick);
     this.cameraBtn.object3D.addEventListener("interact", this.onCameraClick);
+    this.flyBtn.object3D.addEventListener("interact", this.onFlyClick);
     this.inviteBtn.object3D.addEventListener("interact", this.onInviteClick);
   },
 
@@ -67,6 +77,7 @@ AFRAME.registerComponent("in-world-hud", {
     this.spawn.object3D.removeEventListener("interact", this.onSpawnClick);
     this.pen.object3D.removeEventListener("interact", this.onPenClick);
     this.cameraBtn.object3D.removeEventListener("interact", this.onCameraClick);
+    this.flyBtn.object3D.removeEventListener("interact", this.onFlyClick);
     this.inviteBtn.object3D.removeEventListener("interact", this.onInviteClick);
   }
 });
