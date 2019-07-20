@@ -12,9 +12,14 @@
     "sign-in.unpin-complete": "You are now signed in.",
     "sign-in.change-scene": "You'll need to sign in to change the scene.",
     "sign-in.change-scene-complete": "You are now signed in.",
+
     "sign-in.rename-room": "You'll need to sign in to rename axon park.",
     "sign-in.rename-room-complete": "You are now signed in.",
     "sign-in.close-room": "You'll need to sign in to close axon park.",
+
+    "sign-in.room-settings": "You'll need to sign in to change the room's settings.",
+    "sign-in.room-settings-complete": "You are now signed in.",
+
     "sign-in.close-room-complete": "You are now signed in.",
     "sign-in.mute-user": "You'll need to sign in to mute other users.",
     "sign-in.mute-user-complete": "You are now signed in.",
@@ -36,6 +41,13 @@
     "close-room.message":
       "Closing this room will remove yourself and others from axon park, shutting it down permanently.\n\nAre you sure? This action cannot be undone.",
     "close-room.confirm": "Yes, Close Axon Park",
+    "room-settings.apply": "Apply",
+    "room-settings.name-subtitle": "Set the room's name",
+    "room-settings.permissions-subtitle": "Set permissions for visitors",
+    "room-settings.spawn_and_move_media": "Create and move objects",
+    "room-settings.spawn_camera": "Create cameras",
+    "room-settings.spawn_drawing": "Create drawings",
+    "room-settings.pin_objects": "Pin objects",
     "close-room.cancel": "Cancel",
     "entry.room": "Immersive Education",
     "entry.enter-room-title": "Lobby",
@@ -253,6 +265,9 @@
     "settings.close-room": "Close Axon Park...",
     "settings.room-info": "Axon Park Info",
     "settings.create-room": "New Axon Park...",
+
+    "settings.room-settings": "Room Settings",
+
     "settings.enable-streamer-mode": "Camera Mode",
     "settings.disable-streamer-mode": "Exit Camera Mode",
 
