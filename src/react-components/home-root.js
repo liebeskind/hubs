@@ -258,6 +258,7 @@ class HomeRoot extends Component {
 
               {!this.props.hideHero &&
                 (this.props.favoriteHubsResult &&
+                this.props.favoriteHubsResult.entries &&
                 this.props.favoriteHubsResult.entries.length > 0 &&
                 this.state.signedIn
                   ? this.renderFavoriteHero()

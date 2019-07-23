@@ -58,6 +58,7 @@ import "./components/kick-button";
 import "./components/close-vr-notice-button";
 import "./components/leave-room-button";
 import "./components/visible-if-permitted";
+import "./components/visibility-on-content-type";
 import "./components/hide-when-pinned-and-forbidden";
 import "./components/visibility-while-frozen";
 import "./components/stats-plus";
@@ -72,7 +73,6 @@ import "./components/pin-networked-object-button";
 import "./components/drop-object-button";
 import "./components/remove-networked-object-button";
 import "./components/camera-focus-button";
-import "./components/mirror-camera-button";
 import "./components/unmute-video-button";
 import "./components/destroy-at-extreme-distances";
 import "./components/visible-to-owner";
@@ -97,6 +97,7 @@ import "./components/visibility-by-path";
 import "./components/tags";
 import "./components/hubs-text";
 import "./components/billboard";
+import "./components/periodic-full-syncs";
 import { sets as userinputSets } from "./systems/userinput/sets";
 
 import ReactDOM from "react-dom";
@@ -127,7 +128,6 @@ import "./systems/permissions";
 import "./systems/exit-on-blur";
 import "./systems/camera-tools";
 import "./systems/userinput/userinput";
-import "./systems/camera-mirror";
 import "./systems/userinput/userinput-debug";
 import "./systems/ui-hotkeys";
 import "./systems/tips";
@@ -727,13 +727,25 @@ document.addEventListener("DOMContentLoaded", async () => {
     performConditionalSignIn(
       () => hubChannel.signedIn,
       async () => {
+        // Strip el from stored payload because it won't serialize into the store.
+        const serializableDetail = {};
+        Object.assign(serializableDetail, e.detail);
+        delete serializableDetail.el;
+
         if (hubChannel.can("tweet")) {
           isInModal = true;
-          pushHistoryState(history, "modal", "tweet", e.detail);
+          pushHistoryState(history, "modal", "tweet", serializableDetail);
         } else {
+          if (e.detail.el) {
+            // Pin the object if we have to go through OAuth, since the page will refresh and
+            // the object will otherwise be removed
+            e.detail.el.setAttribute("pinnable", "pinned", true);
+          }
+
           const url = await hubChannel.getTwitterOAuthURL();
+
           isInOAuth = true;
-          store.enqueueOnLoadAction("emit_scene_event", { event: "action_media_tweet", detail: e.detail });
+          store.enqueueOnLoadAction("emit_scene_event", { event: "action_media_tweet", detail: serializableDetail });
           remountUI({
             showOAuthDialog: true,
             oauthInfo: [{ type: "twitter", url: url }],
@@ -812,12 +824,12 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     remountUI({ hide: false });
 
-    // HACK: Oculus browser pauses videos when exiting VR mode, so we need to resume them after a timeout.
-    if (/OculusBrowser/i.test(window.navigator.userAgent)) {
+    // HACK: Oculus browser 5 pauses videos when exiting VR mode, so we need to resume them after a timeout.
+    if (/OculusBrowser\/5/i.test(window.navigator.userAgent)) {
       document.querySelectorAll("[media-video]").forEach(m => {
         const video = m.components["media-video"].video;
 
-        if (!video.paused) {
+        if (video && !video.paused) {
           setTimeout(() => video.play(), 1000);
         }
       });
@@ -867,6 +879,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     entryManager.exitScene("closed");
     remountUI({ roomUnavailableReason: "closed" });
   });
+
+  scene.addEventListener("action_camera_recording_started", () => hubChannel.beginRecording());
+  scene.addEventListener("action_camera_recording_ended", () => hubChannel.endRecording());
 
   const platformUnsupportedReason = getPlatformUnsupportedReason();
 
@@ -1312,6 +1327,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       scene.emit("hub_closed");
     }
   });
+
+  hubPhxChannel.on("permissions_updated", () => hubChannel.fetchPermissions());
 
   hubPhxChannel.on("mute", ({ session_id }) => {
     if (session_id === NAF.clientId && !scene.is("muted")) {
