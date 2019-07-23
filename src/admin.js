@@ -23,7 +23,7 @@ window.APP = new App();
 const store = window.APP.store;
 
 import registerTelemetry from "./telemetry";
-registerTelemetry("/admin", "Hubs Admin");
+registerTelemetry("/admin", "Axon Park Admin");
 store.init();
 
 class AdminUI extends Component {

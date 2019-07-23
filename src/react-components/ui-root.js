@@ -1881,7 +1881,7 @@ class UIRoot extends Component {
                     this.setState({ showStreamingTip: false });
                   }}
                 />
-                {!watching && !streaming ? (
+                {false && !watching && !streaming ? (
                   <div className={styles.nagCornerButton}>
                     <button onClick={() => this.pushHistoryState("modal", "feedback")}>
                       <FormattedMessage id="feedback.prompt" />
@@ -1895,7 +1895,7 @@ class UIRoot extends Component {
                   </div>
                 )}
 
-                {!streaming && false && (
+                {false && !streaming && (
                   <button
                     onClick={() => this.toggleFavorited()}
                     className={classNames({
