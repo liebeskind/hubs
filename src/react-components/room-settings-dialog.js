@@ -10,14 +10,13 @@ import DialogContainer from "./dialog-container";
 export default class RoomSettingsDialog extends Component {
   static propTypes = {
     initialSettings: PropTypes.object,
-    member_permissions: PropTypes.object,
     onChange: PropTypes.func,
     onClose: PropTypes.func
   };
 
   constructor(props) {
     super(props);
-    this.state = {initialSettings: props.initialSettings, member_permissions: {spawn_and_move_media: true}};
+    this.state = props.initialSettings;
   }
 
   onSubmit = e => {
