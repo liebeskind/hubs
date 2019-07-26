@@ -227,14 +227,14 @@ class TopHUD extends Component {
                 this.state.mediaDisabled ? noop : () => this.props.mediaSearchStore.sourceNavigateToDefaultSource()
               }
             />
-            <div
+            {false && <div
               className={cx(styles.iconButton, styles.pen, {
                 [styles.active]: this.props.isCursorHoldingPen,
                 [styles.disabled]: this.state.penDisabled
               })}
               title={`Pen${this.state.penDisabled ? " Disabled" : ""}`}
               onClick={this.state.penDisabled ? noop : this.props.onSpawnPen}
-            />
+            />}
             <div
               className={cx(styles.iconButton, styles.camera, {
                 [styles.active]: this.props.hasActiveCamera,
