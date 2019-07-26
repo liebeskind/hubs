@@ -50,19 +50,18 @@ export default class SettingsMenu extends Component {
   renderExpandedMenu() {
     const rowClasses = classNames([styles.row, styles.settingsRow]);
     const rowHeader = classNames([styles.row, styles.settingsRow, styles.rowHeader]);
-    // const showRoomSettings = !!this.props.hubChannel.canOrWillIfCreator("update_hub");
-    const showRoomSettings = false;
+    const showRoomSettings = !!this.props.hubChannel.canOrWillIfCreator("update_hub");
+    // const showRoomSettings = false;
     // const showCloseRoom = !!this.props.hubChannel.canOrWillIfCreator("close_hub");
     const showCloseRoom = false;
-    // const showRoomInfo = !!this.props.hubScene;
-    const showRoomInfo = false;
+    const showRoomInfo = !!this.props.hubScene;
+    // const showRoomInfo = false;
     // const showRoomSection = showRoomSettings || showRoomInfo || showCloseRoom;
     const showRoomSection = false;
     const showStreamerMode = this.props.scene.is("entered") && !!this.props.hubChannel.canOrWillIfCreator("kick_users");
 
     const playerRig = document.querySelector("#player-rig");
     const flyEnabled = playerRig.getAttribute("character-controller", "fly").fly;
-    console.log(flyEnabled)
 
     // Draw self first
     return (
@@ -135,7 +134,7 @@ export default class SettingsMenu extends Component {
                 <FormattedMessage id="settings.row-room" />
               </div>
             )}
-            {showRoomSettings && (
+            {false && showRoomSettings && (
               <div className={rowClasses}>
                 <div className={styles.icon}>
                   <i>

@@ -824,13 +824,23 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     remountUI({ hide: false });
 
-    // HACK: Oculus browser 5 pauses videos when exiting VR mode, so we need to resume them after a timeout.
-    if (/OculusBrowser\/5/i.test(window.navigator.userAgent)) {
+    // HACK: Oculus browser pauses videos when exiting VR mode, so we need to resume them after a timeout.
+    if (/OculusBrowser/i.test(window.navigator.userAgent)) {
       document.querySelectorAll("[media-video]").forEach(m => {
-        const video = m.components["media-video"].video;
+        const videoComponent = m.components["media-video"];
 
-        if (video && !video.paused) {
-          setTimeout(() => video.play(), 1000);
+        if (videoComponent) {
+          videoComponent._ignorePauseStateChanges = true;
+
+          setTimeout(() => {
+            const video = videoComponent.video;
+
+            if (video && video.paused && !videoComponent.data.videoPaused) {
+              video.play();
+            }
+
+            videoComponent._ignorePauseStateChanges = false;
+          }, 1000);
         }
       });
     }
