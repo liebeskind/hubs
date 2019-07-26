@@ -12,15 +12,15 @@ async () => {
 	await console.log(airtableMessages)
 }
 
-let airtableAssets;
+let assets;
 
 airtableAssets.find('recHqITRS7cBMwn9i', (err, record) => 
-   airtableAssets = record.fields
+   assets = record.fields
    )
 
 let modifiedTranslations = translations;
 
-const name = airtableAssets ?  airtableAssets.get('Name') : "Room"
+const name = assets ?  assets.get('Name') : "Room"
 
 modifiedTranslations.en.motto = airtableMessages && airtableMessages.get('Motto') || 'Learn together, from anywhere.\nThe future of learning is virtual.\nEqualizing access to premier quality education.';
 modifiedTranslations.en["sign-in.rename-room"] = `You'll need to sign in to rename ${name}.`;
