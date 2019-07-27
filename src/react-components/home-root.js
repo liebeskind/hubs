@@ -4,7 +4,7 @@ import { IntlProvider, FormattedMessage, addLocaleData } from "react-intl";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import en from "react-intl/locale-data/en";
 
-import { airtableAssets, airtableAssetsInitialState } from '../airtable'
+import { getAirtableAssets, airtableAssetsInitialState } from '../airtable'
 
 import { lang, messages } from "../utils/i18n";
 import { playVideoWithStopOnBlur } from "../utils/video-utils.js";
@@ -88,9 +88,12 @@ class HomeRoot extends Component {
       this.showReportDialog();
     }
 
-    airtableAssets.find('recHqITRS7cBMwn9i', (err, record) => 
-       this.setState({airtableAssets: record.fields})
-    )
+    this.fetchAirtableAssets()
+  }
+
+  fetchAirtableAssets = async () => {
+    const airtableAssets = await getAirtableAssets()
+    if (airtableAssets) this.setState({ airtableAssets })
   }
 
   async verifyAuth() {

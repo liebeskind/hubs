@@ -1,6 +1,6 @@
 import { Socket } from "phoenix";
 import { generateHubName } from "../utils/name-generation";
-import { airtableAssets, airtableAssetsInitialState } from '../airtable'
+import { getAirtableAssets, airtableAssetsInitialState } from '../airtable'
 
 import Store from "../storage/store";
 
@@ -131,10 +131,13 @@ export async function createAndRedirectToNewHub(name, sceneId, sceneUrl, replace
   const createUrl = getReticulumFetchUrl("/api/v1/hubs");
 
   let assets = {Name: "Test", SceneUrl: null};
+    
+  assets = await getAirtableAssets()
+    
+  
+  // const record = await airtableAssets.find('recHqITRS7cBMwn9i')
 
-  const record = await airtableAssets.find('recHqITRS7cBMwn9i')
-
-  if (record) assets = record.fields;
+  // if (record) assets = record.fields;
   
   // const payload = { hub: { name: name || generateHubName() } };
   const payload = { hub: { name: assets.Name } };

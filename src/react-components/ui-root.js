@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import copy from "copy-to-clipboard";
-import { airtableAssets, airtableAssetsInitialState } from '../airtable'
+import { getAirtableAssets, airtableAssetsInitialState } from '../airtable'
 import { IntlProvider, FormattedMessage, addLocaleData } from "react-intl";
 import en from "react-intl/locale-data/en";
 import screenfull from "screenfull";
@@ -324,9 +324,12 @@ class UIRoot extends Component {
       setTimeout(() => this.handleForceEntry(), 2000);
     }
 
-    airtableAssets.find('recHqITRS7cBMwn9i', (err, record) => 
-       this.setState({airtableAssets: record.fields})
-    )
+    this.fetchAirtableAssets()
+  }
+
+  fetchAirtableAssets = async () => {
+    const airtableAssets = await getAirtableAssets()
+    if (airtableAssets) this.setState({ airtableAssets })
   }
 
   componentWillUnmount() {

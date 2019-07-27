@@ -1,5 +1,4 @@
-import {airtableMessages} from '../airtable'
-import {airtableAssets} from '../airtable'
+import {airtableMessages, getAirtableAssets} from '../airtable'
 import translations from '../assets/translations.data.json';
 
 // let fields;
@@ -14,9 +13,9 @@ async () => {
 
 let assets;
 
-airtableAssets.find('recHqITRS7cBMwn9i', (err, record) => 
-   assets = record.fields
-   )
+async () => {
+    assets = await getAirtableAssets()
+}
 
 let modifiedTranslations = translations;
 

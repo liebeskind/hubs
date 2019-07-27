@@ -4,7 +4,7 @@ console.log(`Hubs version: ${process.env.BUILD_VERSION || "?"}`);
 import "aframe";
 import "./utils/logging";
 
-import { airtableAssets, airtableAssetsInitialState } from './airtable'
+import { getAirtableAssets, airtableAssetsInitialState } from './airtable'
 
 import ReactDOM from "react-dom";
 import React from "react";
@@ -47,9 +47,12 @@ class AvatarUI extends React.Component {
     this.props.store.addEventListener("statechanged", this.storeUpdated);
     this.refetchAvatar();
 
-    airtableAssets.find('recHqITRS7cBMwn9i', (err, record) => 
-       this.setState({airtableAssets: record.fields})
-    )
+    this.fetchAirtableAssets()
+  }
+
+  fetchAirtableAssets = async () => {
+    const airtableAssets = await getAirtableAssets()
+    if (airtableAssets) this.setState({ airtableAssets })
   }
 
   componentWillUnmount() {
