@@ -234,8 +234,8 @@ class HomeRoot extends Component {
                 </div>}
 
                 <div className={styles.links}>
-                  <a href="https://www.axonpark.com/" target="_blank">
-                    Axon Park Home
+                  <a href={this.state.airtableAssets.HomepageLink} target="_blank">
+                    {this.state.airtableAssets.Name} Home
                   </a>
                 </div>
 

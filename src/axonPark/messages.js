@@ -1,4 +1,5 @@
-import {airtableMessages, getAirtableAssets} from '../airtable'
+import {airtableMessages} from '../airtable'
+// import {airtableAssets} from '../airtable'
 import translations from '../assets/translations.data.json';
 
 // let fields;
@@ -7,19 +8,21 @@ import translations from '../assets/translations.data.json';
 //    fields = record.fields
 // )
 
-async () => {
-	await console.log(airtableMessages)
-}
+// async () => {
+// 	await console.log(airtableMessages)
+// }
 
-let assets;
+// let assets;
 
-async () => {
-    assets = await getAirtableAssets()
-}
+// airtableAssets.find('recHqITRS7cBMwn9i', (err, record) => 
+//    assets = record.fields
+//    )
 
 let modifiedTranslations = translations;
 
-const name = assets ?  assets.get('Name') : "Room"
+// console.log(assets)
+
+const name = airtableMessages ? airtableMessages.get('Name') : "Room"
 
 modifiedTranslations.en.motto = airtableMessages && airtableMessages.get('Motto') || 'Learn together, from anywhere.\nThe future of learning is virtual.\nEqualizing access to premier quality education.';
 modifiedTranslations.en["sign-in.rename-room"] = `You'll need to sign in to rename ${name}.`;

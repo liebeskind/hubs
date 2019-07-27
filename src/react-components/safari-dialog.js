@@ -18,7 +18,7 @@ export default class SafariDialog extends Component {
     return (
       <DialogContainer title="Open in Safari" {...this.props}>
         <div>
-          <div>Axon Park does not support your current browser on iOS. Copy and paste this link directly in Safari.</div>
+          <div>We do not currently support your current browser on iOS. Copy and paste this link directly in Safari.</div>
           <div className="invite-form">
             <input
               type="text"

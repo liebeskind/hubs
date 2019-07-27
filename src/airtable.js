@@ -7,7 +7,7 @@ Airtable.configure({
 const base = Airtable.base('appIR0AlHDFG5WR8z');
 
 export const airtableAssetsInitialState = { DarkLogo: null, Name: null, Icon: null }
-const airtableAssets = base('Assets');
+export const airtableAssets = base('Assets');
 
 // export const getAirtableAssets = () => airtableAssets.find('recHqITRS7cBMwn9i');
 export const getAirtableAssets = async () => {

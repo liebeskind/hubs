@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import DialogContainer from "./dialog-container.js";
 import { WithHoverSound } from "./wrap-with-audio";
+import { getAirtableAssets, airtableAssetsInitialState } from '../airtable'
 
 const HUB_NAME_PATTERN = "^.{1,64}$";
 
@@ -14,8 +15,18 @@ export default class CreateRoomDialog extends Component {
 
   state = {
     customRoomName: "",
-    customSceneUrl: ""
+    customSceneUrl: "",
+    airtableAssets: airtableAssetsInitialState
   };
+
+  componentDidMount() {
+    this.fetchAirtableAssets();
+  }
+
+  fetchAirtableAssets = async () => {
+    const airtableAssets = await getAirtableAssets()
+    if (airtableAssets) this.setState({ airtableAssets })
+  }
 
   render() {
     const { onCustomScene, onClose, ...other } = this.props;
@@ -25,7 +36,7 @@ export default class CreateRoomDialog extends Component {
     };
 
     return (
-      <DialogContainer title="Initialize Axon Park" onClose={onClose} {...other}>
+      <DialogContainer title={`Initialize ${this.state.airtableAssets.Name}`} onClose={onClose} {...other}>
         <div>
           {this.props.includeScenePrompt ? (
             <div>Choose a name and GLTF URL for your room&apos;s scene:</div>
@@ -57,7 +68,7 @@ export default class CreateRoomDialog extends Component {
               <div className="custom-scene-form__buttons">
                 <WithHoverSound>
                   <button className="custom-scene-form__action-button">
-                    <span>Initialize Axon Park</span>
+                    <span>Initialize ${this.state.airtableAssets.Name}</span>
                   </button>
                 </WithHoverSound>
               </div>
