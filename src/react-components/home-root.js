@@ -4,7 +4,7 @@ import { IntlProvider, FormattedMessage, addLocaleData } from "react-intl";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import en from "react-intl/locale-data/en";
 
-import { getAirtableAssets, airtableAssetsInitialState } from '../airtable'
+import { getAirtableAssets, airtableAssetsInitialState } from '../everyspace/airtable'
 
 import { lang, messages } from "../utils/i18n";
 import { playVideoWithStopOnBlur } from "../utils/video-utils.js";
@@ -332,7 +332,7 @@ class HomeRoot extends Component {
                     className={styles.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    href="https://github.com/mozilla/hubs/blob/master/TERMS.md"
+                    href={this.state.airtableAssets.Terms_Link || "https://github.com/mozilla/hubs/blob/master/TERMS.md"}
                   >
                     <FormattedMessage id="home.terms_of_use" />
                   </a>
@@ -340,7 +340,7 @@ class HomeRoot extends Component {
                     className={styles.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    href="https://github.com/mozilla/hubs/blob/master/PRIVACY.md"
+                    href={this.state.airtableAssets.Privacy_Link || "https://github.com/mozilla/hubs/blob/master/PRIVACY.md"}
                   >
                     <FormattedMessage id="home.privacy_notice" />
                   </a>
@@ -350,14 +350,32 @@ class HomeRoot extends Component {
               </div>}
               <div className={styles.links}>
                 <div className={styles.top}>
-                  <a
+                  {this.state.airtableAssets.Footer_Text_1 && this.state.airtableAssets.Footer_Link_1 ?<a
                     className={styles.link}
-
-                    href="https://www.axonpark.com/about-us/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={this.state.airtableAssets.Footer_Link_1}
 
                   >
-                    About Us
+                    {this.state.airtableAssets.Footer_Text_1}
+                  </a> : <span />}
+                  <a
+                    className={styles.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={this.state.airtableAssets.Terms_Link || "https://github.com/mozilla/hubs/blob/master/TERMS.md"}
+                  >
+                    <FormattedMessage id="home.terms_of_use" />
                   </a>
+                  <a
+                    className={styles.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    href={this.state.airtableAssets.Privacy_Link || "https://github.com/mozilla/hubs/blob/master/PRIVACY.md"}
+                  >
+                    <FormattedMessage id="home.privacy_notice" />
+                  </a>
+                  
                   <img className={styles.axonIcon} src={this.state.airtableAssets.Icon} />
                 </div>
               </div>

@@ -1,37 +1,20 @@
-import {airtableMessages} from '../airtable'
-// import {airtableAssets} from '../airtable'
+import { airtableMessages } from './airtable'
+import { Name, Hero_Blurb } from './customization'
 import translations from '../assets/translations.data.json';
-
-// let fields;
-
-// airtableAssets.find('recHqITRS7cBMwn9i', (err, record) => 
-//    fields = record.fields
-// )
-
-// async () => {
-// 	await console.log(airtableMessages)
-// }
-
-// let assets;
-
-// airtableAssets.find('recHqITRS7cBMwn9i', (err, record) => 
-//    assets = record.fields
-//    )
-
 let modifiedTranslations = translations;
+const name = Name;
+// const name = airtableMessages && airtableMessages.get('Name') || "Axon Park";
 
-// console.log(assets)
-
-const name = airtableMessages ? airtableMessages.get('Name') : "Room"
-
-modifiedTranslations.en.motto = airtableMessages && airtableMessages.get('Motto') || 'Learn together, from anywhere.\nThe future of learning is virtual.\nEqualizing access to premier quality education.';
+// modifiedTranslations.en["home.hero_blurb"] = airtableMessages && airtableMessages.get('Motto') || 'Learn together, from anywhere.\nThe future of learning is virtual.\nEqualizing access to premier quality education.';
+modifiedTranslations.en["home.hero_blurb"] = Hero_Blurb;
 modifiedTranslations.en["sign-in.rename-room"] = `You'll need to sign in to rename ${name}.`;
 modifiedTranslations.en["sign-in.close-room"] = `You'll need to sign in to close ${name}.`;
 modifiedTranslations.en["rename-room.message"] = `Enter the new name for ${name}.`;
 modifiedTranslations.en["rename-room.rename"] = `Rename ${name}`;
 modifiedTranslations.en["close-room.message"] =
-  "Closing this room will remove yourself and others from ${name}, shutting it down permanently.\n\nAre you sure? This action cannot be undone.";
+  `Closing this room will remove yourself and others from ${name}, shutting it down permanently.\n\nAre you sure? This action cannot be undone.`;
 modifiedTranslations.en["close-room.confirm"] = `Yes, Close ${name}`;
+modifiedTranslations.en["entry.enter-room"] = `Enter ${name}`;
 modifiedTranslations.en["entry.leave-room"] = `Leave ${name}`;
 modifiedTranslations.en["entry.in-lobby-notice"] = `You are viewing ${name} from the lobby.`;
 modifiedTranslations.en["exit.subtitle.kicked"] = `You have been kicked from ${name}.`;
@@ -49,12 +32,16 @@ modifiedTranslations.en["home.have_code"] = `Have an ${name} code?`;
 modifiedTranslations.en["commands.leave"] = `Disconnect from ${name}.`;
 modifiedTranslations.en["settings.rename-room"] = `Set ${name} Name...`;
 modifiedTranslations.en["settings.close-room"] = `Close ${name}...`;
+modifiedTranslations.en["settings.leave-room"] = `Leave ${name}`;
 modifiedTranslations.en["settings.room-info"] = `${name} Info`;
 modifiedTranslations.en["settings.create-room"] = `New ${name}...`;
 modifiedTranslations.en["settings.row-room"] = `${name}`;
+modifiedTranslations.en["settings.room-settings"] = `${name} Settings`;
 modifiedTranslations.en["tips.mobile.object_pin"] = `Pin an object to save it to ${name}.`;
 modifiedTranslations.en["tips.mobile.object_pin"] = `Pin an object to save it to ${name}.`;
 modifiedTranslations.en["tips.mobile.invite"] = `Use the Invite button to share ${name}.`;
 modifiedTranslations.en["tips.desktop.object_pin"] = `Pin an object to save it to ${name}.`;
+modifiedTranslations.en["tips.watching.back"] = `Enter ${name}`;
+modifiedTranslations.en["leave-room-dialog.create-room.confirm"] = `Leave ${name}.`;
 
 export default modifiedTranslations;

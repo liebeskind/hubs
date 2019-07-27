@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import DialogContainer from "./dialog-container.js";
 import { WithHoverSound } from "./wrap-with-audio";
-import { getAirtableAssets, airtableAssetsInitialState } from '../airtable'
+import { getAirtableAssets, airtableAssetsInitialState } from '../everyspace/airtable'
 
 const HUB_NAME_PATTERN = "^.{1,64}$";
 

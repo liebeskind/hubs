@@ -254,7 +254,7 @@ export default class SettingsMenu extends Component {
                     this.setState({ expanded: false });
                   }}
                 >
-                  Leave Room
+                  <FormattedMessage id="settings.leave-room" />
                 </a>
               </div>
             </div>

@@ -1,6 +1,6 @@
 import { Socket } from "phoenix";
 import { generateHubName } from "../utils/name-generation";
-import { getAirtableAssets, airtableAssetsInitialState } from '../airtable'
+import { getAirtableAssets, airtableAssetsInitialState } from '../everyspace/airtable'
 
 import Store from "../storage/store";
 
