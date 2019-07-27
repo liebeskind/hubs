@@ -19,11 +19,11 @@ export default class OAuthDialog extends Component {
         <div>We&apos;ll ask for access to your e-mail address so you can skip signing in next time.</div>
         <p className={styles.privacyNotice}>
           By proceeding, you agree to the{" "}
-          <a rel="noopener noreferrer" target="_blank" href="https://github.com/mozilla/hubs/blob/master/TERMS.md">
+          <a rel="noopener noreferrer" target="_blank" href={this.props.termsLink || "https://github.com/mozilla/hubs/blob/master/TERMS.md"}>
             terms of use
           </a>{" "}
           and{" "}
-          <a rel="noopener noreferrer" target="_blank" href="https://github.com/mozilla/hubs/blob/master/PRIVACY.md">
+          <a rel="noopener noreferrer" target="_blank" href={this.props.privacyLink || "https://github.com/mozilla/hubs/blob/master/PRIVACY.md"}>
             privacy notice
           </a>.
         </p>

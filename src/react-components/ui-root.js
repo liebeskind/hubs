@@ -340,6 +340,8 @@ class UIRoot extends Component {
     this.props.scene.removeEventListener("share_video_failed", this.onShareVideoFailed);
   }
 
+  // SignInDialog = ({onClose, message, onSignIn}) => <SignInDialog onClose={onClose} message={message} onSignIn={onSignIn} privacyLink={this.state.airtableAssets.Privacy_Link} termsLink={this.state.airtableAssets.Terms_Link} />
+
   showContextualSignInDialog = () => {
     const {
       signInMessageId,
@@ -1313,7 +1315,7 @@ class UIRoot extends Component {
       return (
         <IntlProvider locale={lang} messages={messages}>
           <div className={classNames(rootStyles)}>
-            <OAuthDialog onClose={this.props.onCloseOAuthDialog} oauthInfo={this.props.oauthInfo} />
+            <OAuthDialog onClose={this.props.onCloseOAuthDialog} oauthInfo={this.props.oauthInfo}  privacyLink={this.state.airtableAssets.Privacy_Link} termsLink={this.state.airtableAssets.Terms_Link} />
           </div>
         </IntlProvider>
       );
@@ -1471,6 +1473,8 @@ class UIRoot extends Component {
                   mediaSearchStore={this.props.mediaSearchStore}
                   avatarId={props.location.state.detail && props.location.state.detail.avatarId}
                   logo={this.state.airtableAssets.DarkLogo}
+                  privacyLink={this.state.airtableAssets.Privacy_Link}
+                  termsLink={this.state.airtableAssets.Terms_Link}
                 />
               )}
             />
@@ -1565,7 +1569,7 @@ class UIRoot extends Component {
               stateKey="modal"
               stateValue="help"
               history={this.props.history}
-              render={() => this.renderDialog(HelpDialog)}
+              render={() => this.renderDialog(<HelpDialog privacyLink={this.state.airtableAssets.Privacy_Link} termsLink={this.state.airtableAssets.Terms_Link} />)}
             />
             <StateRoute
               stateKey="modal"
@@ -1855,6 +1859,8 @@ class UIRoot extends Component {
                   showNonHistoriedDialog={this.showNonHistoriedDialog}
                   pushHistoryState={this.pushHistoryState}
                   toggleFlyMode={this.toggleFlyMode}
+                  privacyLink={this.state.airtableAssets.Privacy_Link} 
+                  termsLink={this.state.airtableAssets.Terms_Link}
                 />
               )}
             {!entered && !streaming && !isMobile && streamerName && <SpectatingLabel name={streamerName} />}

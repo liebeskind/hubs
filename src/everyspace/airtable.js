@@ -7,13 +7,16 @@ const base = Airtable.base('appIR0AlHDFG5WR8z');
 
 export const airtableAssetsInitialState = { DarkLogo: null, Name: null, Icon: null }
 
+let assets;
+
 const airtableAssets = base('Assets');
 // export const getAirtableAssets = () => airtableAssets.find('recHqITRS7cBMwn9i');
 export const getAirtableAssets = async () => {
+    if (assets) return assets;
     const result = await airtableAssets.select({
         view: 'Grid view'
     }).firstPage()
-    
+    assets = result[0].fields;
     return result[0].fields
 }
 

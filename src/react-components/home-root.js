@@ -137,6 +137,8 @@ class HomeRoot extends Component {
       }
     });
 
+  // SignInDialog = ({onClose, message, onSignIn}) => <SignInDialog onClose={onClose} message={message} onSignIn={onSignIn} privacyLink={this.state.airtableAssets.Privacy_Link} termsLink={this.state.airtableAssets.Terms_Link} />
+
   showSignInDialog = () => {
     this.showDialog(SignInDialog, {
       message: messages["sign-in.prompt"],

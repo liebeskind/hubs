@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { FormattedMessage } from "react-intl";
+import { getAirtableAssets, airtableAssetsInitialState } from '../everyspace/airtable'
 
 import styles from "../assets/stylesheets/sign-in-dialog.scss";
 import DialogContainer from "./dialog-container";
@@ -13,12 +14,24 @@ export default class SignInDialog extends Component {
     onSignIn: PropTypes.func,
     onContinue: PropTypes.func,
     message: PropTypes.string,
-    continueText: PropTypes.string
+    continueText: PropTypes.string,
+    privacyLink: PropTypes.string,
+    termsLink: PropTypes.string
   };
 
   state = {
-    email: ""
+    email: "",
+    airtableAssets: airtableAssetsInitialState
   };
+
+  componentWillMount(){
+    this.fetchAirtableAssets()
+  }
+
+  fetchAirtableAssets = async () => {
+    const airtableAssets = await getAirtableAssets()
+    if (airtableAssets) this.setState({ airtableAssets })
+  }
 
   onSubmit = e => {
     e.preventDefault();
@@ -46,7 +59,7 @@ export default class SignInDialog extends Component {
     } else {
       contents = (
         <form onSubmit={this.onSubmit} className={styles.signInForm}>
-          <span>{this.props.message}</span>
+          <span>{this.state.airtableAssets.Sign_In_Message}</span>
           <input
             name="email"
             type="email"
@@ -60,11 +73,11 @@ export default class SignInDialog extends Component {
           />
           <p className={styles.terms}>
             By proceeding, you agree to the{" "}
-            <a rel="noopener noreferrer" target="_blank" href="https://github.com/mozilla/hubs/blob/master/TERMS.md">
+            <a rel="noopener noreferrer" target="_blank" href={this.state.airtableAssets.Terms_Link || "https://github.com/mozilla/hubs/blob/master/TERMS.md"}>
               terms of use
             </a>{" "}
             and{" "}
-            <a rel="noopener noreferrer" target="_blank" href="https://github.com/mozilla/hubs/blob/master/PRIVACY.md">
+            <a rel="noopener noreferrer" target="_blank" href={this.state.airtableAssets.Privacy_Link || "https://github.com/mozilla/hubs/blob/master/PRIVACY.md"}>
               privacy notice
             </a>.
           </p>

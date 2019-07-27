@@ -44,7 +44,7 @@ export default class HelpDialog extends Component {
           </p>
           <p className="dialog__box__contents__links">
             <WithHoverSound>
-              <a target="_blank" rel="noopener noreferrer" href="https://github.com/mozilla/hubs/blob/master/TERMS.md">
+              <a target="_blank" rel="noopener noreferrer" href={this.props.termsLink || "https://github.com/mozilla/hubs/blob/master/TERMS.md"}>
                 <FormattedMessage id="profile.terms_of_use" />
               </a>
             </WithHoverSound>
@@ -52,7 +52,7 @@ export default class HelpDialog extends Component {
               <a
                 target="_blank"
                 rel="noopener noreferrer"
-                href="https://github.com/mozilla/hubs/blob/master/PRIVACY.md"
+                href={this.props.privacyLink || "https://github.com/mozilla/hubs/blob/master/PRIVACY.md"}
               >
                 <FormattedMessage id="profile.privacy_notice" />
               </a>

@@ -324,7 +324,7 @@ export default class SettingsMenu extends Component {
               </a>
               <a
                 className={styles.bottomLink}
-                href="https://github.com/mozilla/hubs/blob/master/TERMS.md"
+                href={this.props.termsLink || "https://github.com/mozilla/hubs/blob/master/TERMS.md"}
                 target="_blank"
                 rel="noreferrer noopener"
               >
@@ -332,7 +332,7 @@ export default class SettingsMenu extends Component {
               </a>
               <a
                 className={styles.bottomLink}
-                href="https://github.com/mozilla/hubs/blob/master/PRIVACY.md"
+                href={this.props.privacyLink || "https://github.com/mozilla/hubs/blob/master/PRIVACY.md"}
                 target="_blank"
                 rel="noreferrer noopener"
               >
