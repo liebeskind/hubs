@@ -4,7 +4,8 @@ console.log(`Hubs version: ${process.env.BUILD_VERSION || "?"}`);
 import "aframe";
 import "./utils/logging";
 
-import { getAirtableAssets, airtableAssetsInitialState } from './everyspace/airtable'
+import { getAirtableAssets, airtableAssetsInitialState } from './everyspace/airtable';
+import { HelmetComponent } from './everyspace/helmet';
 
 import ReactDOM from "react-dom";
 import React from "react";
@@ -89,6 +90,7 @@ class AvatarUI extends React.Component {
     return (
       <form onSubmit={this.setAvatar} className={styles.avatarLanding}>
         <div className={classNames([styles.box, styles.darkened])}>
+          <HelmetComponent assets={this.state.airtableAssets} page="Avatar" />
           <label className={styles.title}>
             <span>{avatar.name}</span>
           </label>

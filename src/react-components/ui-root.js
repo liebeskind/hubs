@@ -6,7 +6,7 @@ import { getAirtableAssets, airtableAssetsInitialState } from '../everyspace/air
 import { IntlProvider, FormattedMessage, addLocaleData } from "react-intl";
 import en from "react-intl/locale-data/en";
 import screenfull from "screenfull";
-
+import { HelmetComponent } from "../everyspace/helmet";
 import { VR_DEVICE_AVAILABILITY } from "../utils/vr-caps-detect";
 import { canShare } from "../utils/share";
 import styles from "../assets/stylesheets/ui-root.scss";
@@ -1449,6 +1449,7 @@ class UIRoot extends Component {
       <ReactAudioContext.Provider value={this.state.audioContext}>
         <IntlProvider locale={lang} messages={messages}>
           <div className={classNames(rootStyles)}>
+            <HelmetComponent page="Live" assets={this.state.airtableAssets} />
             {this.state.dialog}
             {preload && (
               <PreloadOverlay

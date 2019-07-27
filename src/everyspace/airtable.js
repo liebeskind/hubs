@@ -25,6 +25,5 @@ export const airtableMessages = base('Messages').select({
 }).firstPage(async (err, records) => {
     if (err) { console.error(err); return; }
     const record = records[0];
-    console.log(record)
     return record;
 });;

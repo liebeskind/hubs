@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { IntlProvider, FormattedMessage, addLocaleData } from "react-intl";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import en from "react-intl/locale-data/en";
-
+import { HelmetComponent } from '../everyspace/helmet';
 import { getAirtableAssets, airtableAssetsInitialState } from '../everyspace/airtable'
 
 import { lang, messages } from "../utils/i18n";
@@ -217,6 +217,7 @@ class HomeRoot extends Component {
       <IntlProvider locale={lang} messages={messages}>
         <div className={styles.home}>
           <div className={mainContentClassNames}>
+            <HelmetComponent assets={this.state.airtableAssets} page="Home" />
             <div className={styles.headerContent}>
               <div className={styles.titleAndNav} onClick={() => (document.location = "/")}>
 

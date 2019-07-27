@@ -132,8 +132,7 @@ export async function createAndRedirectToNewHub(name, sceneId, sceneUrl, replace
 
   let assets = {Name: "Test", SceneUrl: null};
     
-  assets = await getAirtableAssets()
-    
+  assets = await getAirtableAssets();
   
   // const record = await airtableAssets.find('recHqITRS7cBMwn9i')
 
