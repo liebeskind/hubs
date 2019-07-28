@@ -1546,6 +1546,8 @@ class UIRoot extends Component {
                   mediaSearchStore={this.props.mediaSearchStore}
                   avatarId={props.location.state.detail && props.location.state.detail.avatarId}
                   logo={this.state.airtableAssets.DarkLogo}
+                  privacyLink={this.state.airtableAssets.Privacy_Link}
+                  termsLink={this.state.airtableAssets.Terms_Link}
                 />
               )}
             />

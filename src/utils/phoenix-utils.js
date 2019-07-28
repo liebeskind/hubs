@@ -148,7 +148,7 @@ export async function createAndRedirectToNewHub(name, sceneId, sceneUrl, replace
     // payload.hub.default_environment_gltf_bundle_url = sceneUrl;
   // }
     
-    payload.hub.default_environment_gltf_bundle_url = assets.SceneUrl;
+  payload.hub.default_environment_gltf_bundle_url = assets.SceneUrl;
     
 
   const headers = { "content-type": "application/json" };
