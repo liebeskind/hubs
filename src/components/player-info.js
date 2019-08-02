@@ -109,14 +109,24 @@ AFRAME.registerComponent("player-info", {
         communityIdentifierEl.setAttribute("text", { value: this.communityIdentifier });
       }
     }
+
+    // Used to enable Megaphone mode, where rolloff is significantly less than the normal 2.0
+    const headEl = this.el.querySelector(".head");
+    if (headEl) {
+      if (this.isOwner) {
+        headEl.setAttribute("networked-audio-source", { rolloffFactor: 0.0 }); // As though right on top of the admin.  
+        // Other options include 
+        // distanceModel: "inverse"
+        // maxDistance: 10000
+        // positional: true
+        // refDistance: 1
+        // rolloffFactor: 0
+      }
+    }
+
     const recordingBadgeEl = this.el.querySelector(".recordingBadge");
     if (recordingBadgeEl) {
       recordingBadgeEl.object3D.visible = this.isRecording;
-    }
-
-    const headEl = this.el.querySelector(".head");
-    if (headEl) {
-      headEl.object3D.setAttribute("networked-audio-source", {value: `rolloffFactor: ${this.isOwner? 0.25 : 2.0}`);
     }
 
     const modBadgeEl = this.el.querySelector(".modBadge");
