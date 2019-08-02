@@ -363,7 +363,8 @@ AFRAME.registerComponent("media-loader", {
         this.el.setAttribute("floaty-object", { reduceAngularFloat: true, releaseGravity: -1 });
         this.el.setAttribute(
           "media-image",
-          Object.assign({}, this.data.mediaOptions, { src: accessibleUrl, contentType, batch: !disableBatching })
+          // Object.assign({}, this.data.mediaOptions, { src: accessibleUrl, contentType, batch: !disableBatching })
+          Object.assign({}, this.data.mediaOptions, { src: accessibleUrl, contentType, batch: false })
         );
 
         if (this.el.components["position-at-box-shape-border__freeze"]) {
