@@ -140,6 +140,42 @@ AFRAME.registerComponent("scale-audio-feedback", {
 
   init() {
     this._playerCamera = document.getElementById("player-camera").object3D;
+    this.playerSessionId = null;
+    this.isOwner = false;
+    this.isLocalPlayerInfo = this.el.id === "player-rig";
+    if (!this.isLocalPlayerInfo) {
+      NAF.utils.getNetworkedEntity(this.el).then(networkedEntity => {
+        this.playerSessionId = NAF.utils.getCreator(networkedEntity);
+        const playerPresence = window.APP.hubChannel.presence.state[this.playerSessionId];
+        if (playerPresence) {
+          this.checkWhetherAdminFromPresenceMeta(playerPresence.metas[0]);
+        }
+      });
+    }
+  },
+
+  play() {
+    this.el.sceneEl.addEventListener("presence_updated", this.checkWhetherAdmin);
+  },
+
+  pause() {
+    this.el.sceneEl.removeEventListener("presence_updated", this.checkWhetherAdmin);
+  },
+
+  checkWhetherAdmin(e) {
+    console.log(e)
+     if (!this.playerSessionId && this.isLocalPlayerInfo) {
+      this.playerSessionId = NAF.clientId;
+    }
+    if (!this.playerSessionId) return;
+    if (this.playerSessionId !== e.detail.sessionId) return;
+
+    this.checkWhetherAdminFromPresenceMeta(e.detail);
+  },
+
+  checkWhetherAdminFromPresenceMeta(presenceMeta){
+    console.log(presenceMeta)
+    this.isOwner = !!(presenceMeta.roles && presenceMeta.roles.owner);
   },
 
   tick() {
@@ -150,10 +186,12 @@ AFRAME.registerComponent("scale-audio-feedback", {
     const { minScale, maxScale } = this.data;
 
     const audioAnalyser = this.el.components["networked-audio-analyser"];
-
     if (!audioAnalyser) return;
 
     const { object3D } = this.el;
+    // console.log(object3D)
+    // console.log(this._playerCamera)
+    console.log(this.isOwner)
 
     const scale = getAudioFeedbackScale(this.el.object3D, this._playerCamera, minScale, maxScale, audioAnalyser.volume);
 
