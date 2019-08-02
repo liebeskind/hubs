@@ -1196,13 +1196,14 @@ document.addEventListener("DOMContentLoaded", async () => {
                 }
               }
             }
-
+            console.log(meta)
             scene.emit("presence_updated", {
               sessionId,
               profile: meta.profile,
               roles: meta.roles,
               streaming: meta.streaming,
-              recording: meta.recording
+              recording: meta.recording,
+              megaphoneEnabled: meta.megaphoneEnabled
             });
           });
 
