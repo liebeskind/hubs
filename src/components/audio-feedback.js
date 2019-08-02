@@ -25,7 +25,6 @@ export function getAudioFeedbackScale(fromObject, toObject, minScale, maxScale, 
   tempScaleToPosition.setFromMatrixPosition(toObject.matrixWorld);
   tempScaleFromPosition.setFromMatrixPosition(fromObject.matrixWorld);
   const distance = tempScaleFromPosition.distanceTo(tempScaleToPosition) / 10;
-  // If doesn't make it above threshold of 1 based on volume and distance, can't hear.
   return Math.min(maxScale, minScale + (maxScale - minScale) * volume * 8 * distance);
 }
 
@@ -141,40 +140,6 @@ AFRAME.registerComponent("scale-audio-feedback", {
 
   init() {
     this._playerCamera = document.getElementById("player-camera").object3D;
-    this.playerSessionId = null;
-    this.isOwner = false;
-    this.isLocalPlayerInfo = this.el.id === "player-rig";
-    if (!this.isLocalPlayerInfo) {
-      NAF.utils.getNetworkedEntity(this.el).then(networkedEntity => {
-        this.playerSessionId = NAF.utils.getCreator(networkedEntity);
-        const playerPresence = window.APP.hubChannel.presence.state[this.playerSessionId];
-        if (playerPresence) {
-          this.checkWhetherAdminFromPresenceMeta(playerPresence.metas[0]);
-        }
-      });
-    }
-  },
-
-  play() {
-    this.el.sceneEl.addEventListener("presence_updated", this.checkWhetherAdmin);
-  },
-
-  pause() {
-    this.el.sceneEl.removeEventListener("presence_updated", this.checkWhetherAdmin);
-  },
-
-  checkWhetherAdmin(e) {
-     if (!this.playerSessionId && this.isLocalPlayerInfo) {
-      this.playerSessionId = NAF.clientId;
-    }
-    if (!this.playerSessionId) return;
-    if (this.playerSessionId !== e.detail.sessionId) return;
-
-    this.checkWhetherAdminFromPresenceMeta(e.detail);
-  },
-
-  checkWhetherAdminFromPresenceMeta(presenceMeta){
-    this.isOwner = !!(presenceMeta.roles && presenceMeta.roles.owner);
   },
 
   tick() {
@@ -185,16 +150,12 @@ AFRAME.registerComponent("scale-audio-feedback", {
     const { minScale, maxScale } = this.data;
 
     const audioAnalyser = this.el.components["networked-audio-analyser"];
+
     if (!audioAnalyser) return;
 
     const { object3D } = this.el;
-    // console.log(object3D)
-    // console.log(this._playerCamera)
-    // console.log(this.isOwner)
 
-    let scale = getAudioFeedbackScale(this.el.object3D, this._playerCamera, minScale, maxScale, audioAnalyser.volume);
-
-    if (this.isOwner) scale = 1.6 // If user is admin, set their volume to 1.6 on a 1 to 2 scale.
+    const scale = getAudioFeedbackScale(this.el.object3D, this._playerCamera, minScale, maxScale, audioAnalyser.volume);
 
     object3D.scale.setScalar(scale);
     object3D.matrixNeedsUpdate = true;

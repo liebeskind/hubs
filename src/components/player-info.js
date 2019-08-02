@@ -114,6 +114,11 @@ AFRAME.registerComponent("player-info", {
       recordingBadgeEl.object3D.visible = this.isRecording;
     }
 
+    const headEl = this.el.querySelector(".head");
+    if (headEl) {
+      headEl.object3D.setAttribute("networked-audio-source", {value: `rolloffFactor: ${this.isOwner? 0.25 : 2.0}`);
+    }
+
     const modBadgeEl = this.el.querySelector(".modBadge");
     if (modBadgeEl) {
       modBadgeEl.object3D.visible = !this.isRecording && this.isOwner;

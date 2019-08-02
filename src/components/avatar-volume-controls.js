@@ -53,6 +53,7 @@ AFRAME.registerComponent("avatar-volume-controls", {
     if (!source) return;
 
     this.audio = source.components["networked-audio-source"].sound;
+    console.log(this.audio.rolloffFactor)
     this.update();
   }
 });
