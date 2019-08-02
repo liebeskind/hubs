@@ -7,24 +7,14 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-    <link rel="icon" sizes="16x16 24x24 32x32 48x48 64x64" href="/favicon.ico">
     <!-- Web-App Manifest (https://w3c.github.io/manifest/) -->
     <link rel="manifest" href="/manifest.webmanifest">
     <!-- iOS (for "Add to Homescreen") -->
     <meta name="mobile-web-app-capable" content="yes">
     <!-- Microsoft Edge (Windows) -->
-    <meta name="application-name" content="Hubs">
-    <title>Axon Park | Immersive Education</title>
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Axon Park">
-    <meta property="og:description" content="Learn together, from anywhere. The future of learning is virtual.">
-    <meta property="og:image" content="https://axonpark.com/wp-content/uploads/2019/07/ThePark-Featured.jpg">
     <meta property="og:url" content="/">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:site" content="@axonpark">
-    <meta name="twitter:title" content="Axon Park">
-    <meta name="twitter:image" content="https://axonpark.com/wp-content/uploads/2019/07/ThePark-Featured.jpg">
-    <meta name="twitter:description" content="Learn together, from anywhere. The future of learning is virtual.">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700" rel="stylesheet">
     <script>
         // HACK Chrome on iOS breaks completely if we don't do this because a-frame's webvr-polyfill doesn't recognize
@@ -49,7 +39,7 @@
 
       gtag('config', 'UA-140675381-1');
     </script>
-    <meta http-equiv="origin-trial" data-feature="WebVR (For Chrome M62+)" data-expires="2018-09-11" content="AtOSmCIwReA1cq9L756ii6hccpiM4ObrwF0bYDmr1nNzMQi2zTjoN1puufPHt+QUwcx0F6rbLEPj/YrQanRQUA8AAABVeyJvcmlnaW4iOiJodHRwczovL2h1YnMubW96aWxsYS5jb206NDQzIiwiZmVhdHVyZSI6IldlYlZSMS4xTTYyIiwiZXhwaXJ5IjoxNTM2NjI0MDAwfQ=="><link href="/assets/stylesheets/vendor-78428383224983c13656.css" rel="stylesheet"><link href="/assets/stylesheets/engine-d6f52a1f7b0d4bfc0fed.css" rel="stylesheet"><link href="/assets/stylesheets/hub-0b819b5bee79a17075ee.css" rel="stylesheet"><script type="text/javascript" src="/assets/js/vendor-6729fba7e566bd55042b.js"></script><script type="text/javascript" src="/assets/js/engine-659703bedd3b42af5ff3.js"></script><script type="text/javascript" src="/assets/js/hub-eef9a8b342b4e5656ceb.js"></script></head>
+    <meta http-equiv="origin-trial" data-feature="WebVR (For Chrome M62+)" data-expires="2018-09-11" content="AtOSmCIwReA1cq9L756ii6hccpiM4ObrwF0bYDmr1nNzMQi2zTjoN1puufPHt+QUwcx0F6rbLEPj/YrQanRQUA8AAABVeyJvcmlnaW4iOiJodHRwczovL2h1YnMubW96aWxsYS5jb206NDQzIiwiZmVhdHVyZSI6IldlYlZSMS4xTTYyIiwiZXhwaXJ5IjoxNTM2NjI0MDAwfQ=="><link href="/assets/stylesheets/vendor-78428383224983c13656.css" rel="stylesheet"><link href="/assets/stylesheets/engine-d6f52a1f7b0d4bfc0fed.css" rel="stylesheet"><link href="/assets/stylesheets/hub-8acca8c138668fa729f4.css" rel="stylesheet"><script type="text/javascript" src="/assets/js/vendor-8e1cec16496a9bbe6ee5.js"></script><script type="text/javascript" src="/assets/js/engine-958f108a6418cfbe9e47.js"></script><script type="text/javascript" src="/assets/js/hub-32f7bf605fe863592567.js"></script></head>
 
 <body>
     <a-scene
@@ -226,6 +216,7 @@
 
                         <template data-name="Head">
                             <a-entity
+                                class="head"
                                 networked-audio-source="rolloffFactor: 2.0;"
                                 networked-audio-analyser
                                 personal-space-invader="radius: 0.15; useMaterial: true;"
@@ -845,7 +836,6 @@
             character-controller="pivot: #player-camera"
             ik-root
             player-info
-            periodic-full-syncs
         >
             <a-entity
                 id="player-hud"
