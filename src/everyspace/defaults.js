@@ -1,0 +1,1 @@
+export const defaultRolloffFactor = 2.0;

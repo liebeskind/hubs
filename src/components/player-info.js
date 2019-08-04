@@ -2,6 +2,7 @@ import { injectCustomShaderChunks } from "../utils/media-utils";
 import { AVATAR_TYPES } from "../utils/avatar-utils";
 import { registerComponentInstance } from "../utils/component-utils";
 import { deregisterComponentInstance } from "../utils/component-utils";
+import {defaultRolloffFactor} from '../everyspace/defaults'
 
 function ensureAvatarNodes(json) {
   const { nodes } = json;
@@ -127,7 +128,7 @@ AFRAME.registerComponent("player-info", {
     // Used to enable Megaphone mode, where rolloff is significantly less than the normal 2.0
     const headEl = this.el.querySelector(".head");
     if (headEl) {
-      if (this.data.megaphoneEnabled && this.isOwner) { // Make sure only admins 
+      if (this.data.megaphoneEnabled && this.isOwner) { // Make sure only admins can enable megaphone.  Clients ignore non-admins that try.
         headEl.setAttribute("networked-audio-source", { rolloffFactor: 0.15 }); // Normal rolloffFactor is 1.0
         // Other options for networked-audio-source include 
         // distanceModel: "inverse"
@@ -136,7 +137,7 @@ AFRAME.registerComponent("player-info", {
         // refDistance: 1
         // rolloffFactor: 0
       } else {
-        headEl.setAttribute("networked-audio-source", { rolloffFactor: 2.0 }); // Normal rolloffFactor is 1.0
+        headEl.setAttribute("networked-audio-source", { rolloffFactor: defaultRolloffFactor }); // Normal rolloffFactor in networked-audio-source is 1.0.  Hubs has it at 2.0
       }
     }
 

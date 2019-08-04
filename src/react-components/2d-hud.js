@@ -78,6 +78,7 @@ class TopHUD extends Component {
     this.state.cameraDisabled = !window.APP.hubChannel.can("spawn_camera");
     this.state.penDisabled = !window.APP.hubChannel.can("spawn_drawing");
     this.state.mediaDisabled = !window.APP.hubChannel.can("spawn_and_move_media");
+    this.state.megaphoneDisabled = !window.APP.hubChannel.canOrWillIfCreator("update_hub")
   }
 
   onPermissionsUpdated = () => {
@@ -291,11 +292,11 @@ class TopHUD extends Component {
               title={this.props.flyingEnabled ? "Disable Flying" : "Enable Flying"}
               onClick={()=>this.props.onToggleFlying(!this.props.flyingEnabled)}
             />
-            <div
+            {!this.state.megaphoneDisabled && <div
               className={cx(styles.iconButton, styles.megaphone, { [styles.active]: this.props.megaphoneEnabled })}
               title={this.props.megaphoneEnabled ? "Disable Megaphone" : "Enable Megaphone"}
               onClick={()=>this.props.onToggleMegaphone(!this.props.megaphoneEnabled)}
-            />
+            />}
           </div>
         )}
       </div>

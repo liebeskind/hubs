@@ -15,6 +15,7 @@ AFRAME.registerComponent("in-world-hud", {
     this.flyBtn = this.el.querySelector(".fly-btn");
     this.megaphoneBtn = this.el.querySelector(".megaphone-btn");
 
+
     this.updateButtonStates = () => {
       this.mic.setAttribute("mic-button", "active", this.el.sceneEl.is("muted"));
       // this.pen.setAttribute("icon-button", "active", this.el.sceneEl.is("pen"));
@@ -23,6 +24,8 @@ AFRAME.registerComponent("in-world-hud", {
       this.megaphoneBtn.setAttribute("icon-button", "active", this.el.sceneEl.is("megaphoneEnabled"));
 
       if (window.APP.hubChannel) {
+        const isAdmin = window.APP.hubChannel.canOrWillIfCreator("update_hub")
+        if (!isAdmin) this.megaphoneBtn.setAttribute("visible", false);
         this.spawn.setAttribute("icon-button", "disabled", !window.APP.hubChannel.can("spawn_and_move_media"));
         // this.pen.setAttribute("icon-button", "disabled", !window.APP.hubChannel.can("spawn_drawing"));
         this.cameraBtn.setAttribute("icon-button", "disabled", !window.APP.hubChannel.can("spawn_camera"));
