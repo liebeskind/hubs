@@ -39,7 +39,7 @@
 
       gtag('config', 'UA-140675381-1');
     </script>
-    <meta http-equiv="origin-trial" data-feature="WebVR (For Chrome M62+)" data-expires="2018-09-11" content="AtOSmCIwReA1cq9L756ii6hccpiM4ObrwF0bYDmr1nNzMQi2zTjoN1puufPHt+QUwcx0F6rbLEPj/YrQanRQUA8AAABVeyJvcmlnaW4iOiJodHRwczovL2h1YnMubW96aWxsYS5jb206NDQzIiwiZmVhdHVyZSI6IldlYlZSMS4xTTYyIiwiZXhwaXJ5IjoxNTM2NjI0MDAwfQ=="><link href="/assets/stylesheets/vendor-78428383224983c13656.css" rel="stylesheet"><link href="/assets/stylesheets/engine-d6f52a1f7b0d4bfc0fed.css" rel="stylesheet"><link href="/assets/stylesheets/hub-8acca8c138668fa729f4.css" rel="stylesheet"><script type="text/javascript" src="/assets/js/vendor-8e1cec16496a9bbe6ee5.js"></script><script type="text/javascript" src="/assets/js/engine-958f108a6418cfbe9e47.js"></script><script type="text/javascript" src="/assets/js/hub-32f7bf605fe863592567.js"></script></head>
+    <meta http-equiv="origin-trial" data-feature="WebVR (For Chrome M62+)" data-expires="2018-09-11" content="AtOSmCIwReA1cq9L756ii6hccpiM4ObrwF0bYDmr1nNzMQi2zTjoN1puufPHt+QUwcx0F6rbLEPj/YrQanRQUA8AAABVeyJvcmlnaW4iOiJodHRwczovL2h1YnMubW96aWxsYS5jb206NDQzIiwiZmVhdHVyZSI6IldlYlZSMS4xTTYyIiwiZXhwaXJ5IjoxNTM2NjI0MDAwfQ=="><link href="/assets/stylesheets/vendor-[md5:contenthash:hex:20].css" rel="stylesheet"><link href="/assets/stylesheets/engine-[md5:contenthash:hex:20].css" rel="stylesheet"><link href="/assets/stylesheets/hub-[md5:contenthash:hex:20].css" rel="stylesheet"><script type="text/javascript" src="/assets/js/vendor-e88892f1216d0dd61b45.js"></script><script type="text/javascript" src="/assets/js/engine-c0a15d860838823fbf68.js"></script><script type="text/javascript" src="/assets/js/hub-788e86660eeae220e7ff.js"></script></head>
 
 <body>
     <a-scene
@@ -55,8 +55,10 @@
         networked-scene="adapter: janus; audio: true; debug: true; connectOnLoad: false;"
         mute-mic="eventSrc: a-scene; toggleEvents: action_mute"
         action-to-event__mute="path: /actions/muteMic; event: action_mute;"
-        action-to-event__fly="path: /actions/toggleFlying; event: action_fly;"
         toggle-flying="eventSrc: a-scene; toggleEvents: action_fly"
+        action-to-event__fly="path: /actions/toggleFlying; event: action_fly;"
+        toggle-megaphone="eventSrc: a-scene; toggleEvents: action_megaphone"
+        action-to-event__megaphone="path: /actions/enableMegaphone; event: action_megaphone;"
         freeze-controller="toggleEvent: action_freeze"
         personal-space-bubble="debug: false;"
         rotate-selected-object
@@ -81,10 +83,10 @@
             <img id="camera-off-hover" crossorigin="anonymous" src="/assets/hud/camera_off-hover-861183f20f53e492d68b43c09543fc92.png">
             <img id="camera-on" crossorigin="anonymous" src="/assets/hud/camera_on-3de967ef074109d802254417b420806d.png">
             <img id="camera-on-hover" crossorigin="anonymous" src="/assets/hud/camera_on-hover-5d9d8bff77e56431f8e03e56d6c1a75f.png">
-            <img id="fly-off" crossorigin="anonymous" src="/assets/hud/fly_off-5a86d30c626d89876d27c69ee9d817fa.png">
-            <img id="fly-off-hover" crossorigin="anonymous" src="/assets/hud/fly_off-hover-2e72e7df739c1ec085824a9c2de40fd4.png">
-            <img id="fly-on" crossorigin="anonymous" src="/assets/hud/fly_on-cbbbc4c29388eb09fcdaaf0a45ca93e4.png">
-            <img id="fly-on-hover" crossorigin="anonymous" src="/assets/hud/fly_on-hover-e056d693d9b3ecdb59db67c56e53acdd.png">
+            <img id="fly-off" crossorigin="anonymous" src="/assets/hud/fly_off-960480091ca27ea9570bde17cb33ceff.png">
+            <img id="fly-off-hover" crossorigin="anonymous" src="/assets/hud/fly_off-hover-b130cf144d0a2e18b9e896e6a58dbe6f.png">
+            <img id="fly-on" crossorigin="anonymous" src="/assets/hud/fly_on-5a86d30c626d89876d27c69ee9d817fa.png">
+            <img id="fly-on-hover" crossorigin="anonymous" src="/assets/hud/fly_on-hover-2e72e7df739c1ec085824a9c2de40fd4.png">
             <img id="snap-camera" crossorigin="anonymous" src="/assets/images/snap_camera-f1a64a6992a76c97b56f38be32c8a3e8.png">
             <img id="camera" crossorigin="anonymous" src="/assets/images/camera-f1a64a6992a76c97b56f38be32c8a3e8.png">
             <img id="close-white" crossorigin="anonymous" src="/assets/images/close-white-a1f3c2104b6b2ddd80c54bf1e92de902.png">
@@ -405,6 +407,7 @@
             <template id="interactable-pen">
                 <a-entity
                     class="pen interactable"
+                    media-loader="src: https://asset-bundles-prod.reticulum.io/interactables/DrawingPen/DrawingPen-34fb4aee27.gltf;"
                     ammo-body="type: dynamic; mass: 0.001; collisionFilterGroup: 1; collisionFilterMask: 15;"
                     owned-object-limiter="counter: #pen-counter"
                     set-unowned-body-kinematic
@@ -836,6 +839,7 @@
             character-controller="pivot: #player-camera"
             ik-root
             player-info
+            periodic-full-syncs
         >
             <a-entity
                 id="player-hud"
@@ -932,6 +936,16 @@
                         scale="0.1 0.1 0.1"
                         position="0.28 0 0.001"
                         class="hud fly-btn"
+                        material="alphaTest:0.1;"
+                    ></a-entity>
+                     <a-entity
+                        is-remote-hover-target
+                        tags="singleActionButton: true"
+                        sprite
+                        icon-button="tooltip: #hud-tooltip; tooltipText: Enable Megaphone; activeTooltipText: Disable Megaphone; image: megaphone_off.png; hoverImage: megaphone_off-hover.png; activeImage: megaphone_on.png; activeHoverImage: megaphone_on-hover.png"
+                        scale="0.1 0.1 0.1"
+                        position="0.39 0 0.001"
+                        class="hud megaphone-btn"
                         material="alphaTest:0.1;"
                     ></a-entity>
                 </a-entity>
@@ -1033,7 +1047,6 @@
             action-to-event="path: /actions/spawnPen; event: spawn_pen; withPermission: spawn_drawing"
             super-spawner="
                 template: #interactable-pen;
-                src: https://asset-bundles-prod.reticulum.io/interactables/DrawingPen/DrawingPen-34fb4aee27.gltf;
                 spawnEvent: spawn_pen;
                 animateFromCursor: true;
                 useCustomSpawnScale: true;

@@ -1,0 +1,28 @@
+
+.avatar-preview__preview__2I8qx {
+  position: relative;
+  overflow: hidden;
+  background: #eaeaea; }
+  .avatar-preview__preview__2I8qx .loader {
+    position: absolute;
+    left: calc(50% - 4.3em);
+    top: calc(50% - 4.5em); }
+  .avatar-preview__preview__2I8qx .error {
+    color: #7f7f7f;
+    text-align: center;
+    padding: 1.5em;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-weight: bold;
+    white-space: pre-wrap;
+    box-sizing: border-box;
+    width: 100%; }
+  .avatar-preview__preview__2I8qx .error-icon {
+    width: 16px;
+    height: 16px;
+    transform: translateY(2px);
+    margin: 0 0.3em; }
+
+
+/*# sourceMappingURL=admin-[md5:contenthash:hex:20].css.map*/
