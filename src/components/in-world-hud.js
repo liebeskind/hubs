@@ -13,12 +13,14 @@ AFRAME.registerComponent("in-world-hud", {
     this.inviteBtn = this.el.querySelector(".invite-btn");
     this.background = this.el.querySelector(".bg");
     this.flyBtn = this.el.querySelector(".fly-btn");
+    this.megaphoneBtn = this.el.querySelector(".megaphone-btn");
 
     this.updateButtonStates = () => {
       this.mic.setAttribute("mic-button", "active", this.el.sceneEl.is("muted"));
       // this.pen.setAttribute("icon-button", "active", this.el.sceneEl.is("pen"));
       this.cameraBtn.setAttribute("icon-button", "active", this.el.sceneEl.is("camera"));
       this.flyBtn.setAttribute("icon-button", "active", this.el.sceneEl.is("flying"));
+      this.megaphoneBtn.setAttribute("icon-button", "active", this.el.sceneEl.is("megaphone"));
 
       if (window.APP.hubChannel) {
         this.spawn.setAttribute("icon-button", "disabled", !window.APP.hubChannel.can("spawn_and_move_media"));
@@ -34,6 +36,10 @@ AFRAME.registerComponent("in-world-hud", {
         return;
       this.updateButtonStates();
     };
+
+    this.onMegaphoneClick = () => {
+      this.el.emit("action_megaphone");
+    }
 
     this.onMicClick = () => {
       this.el.emit("action_mute");
@@ -77,6 +83,7 @@ AFRAME.registerComponent("in-world-hud", {
     // this.pen.object3D.addEventListener("interact", this.onPenClick);
     this.cameraBtn.object3D.addEventListener("interact", this.onCameraClick);
     this.flyBtn.object3D.addEventListener("interact", this.onFlyClick);
+    this.megaphoneBtn.object3D.addEventListener("interact", this.onMegaphoneClick);
     this.inviteBtn.object3D.addEventListener("interact", this.onInviteClick);
   },
 
@@ -90,6 +97,7 @@ AFRAME.registerComponent("in-world-hud", {
     // this.pen.object3D.removeEventListener("interact", this.onPenClick);
     this.cameraBtn.object3D.removeEventListener("interact", this.onCameraClick);
     this.flyBtn.object3D.removeEventListener("interact", this.onFlyClick);
+    this.megaphoneBtn.object3D.removeEventListener("interact", this.onMegaphoneClick);
     this.inviteBtn.object3D.removeEventListener("interact", this.onInviteClick);
   }
 });

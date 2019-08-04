@@ -431,6 +431,10 @@ class UIRoot extends Component {
     this.props.scene.emit("action_mute");
   };
 
+  toggleMegaphone = () => {
+    this.props.scene.emit("action_megaphone");
+  };
+
   toggleFreeze = () => {
     this.props.scene.emit("action_freeze");
   };
@@ -786,7 +790,6 @@ class UIRoot extends Component {
     playerRig.setAttribute("character-controller", "fly", enable);  
     this.setState({flyingEnabled: enable})
   }
-  
 
   renderDialog = (DialogClass, props = {}) => <DialogClass {...{ onClose: this.closeDialog, ...props }} />;
 
@@ -1886,6 +1889,8 @@ class UIRoot extends Component {
                   onToggleMute={this.toggleMute}
                   onToggleFlying={this.toggleFlyMode}
                   flyingEnabled={this.state.flyingEnabled}
+                  onToggleMegaphone={this.toggleMegaphone}
+                  megaphoneEnabled={this.state.megaphoneEnabled}
                   onToggleFreeze={this.toggleFreeze}
                   onSpawnPen={this.spawnPen}
                   onSpawnCamera={() => this.props.scene.emit("action_toggle_camera")}

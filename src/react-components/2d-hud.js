@@ -291,6 +291,11 @@ class TopHUD extends Component {
               title={this.props.flyingEnabled ? "Disable Flying" : "Enable Flying"}
               onClick={()=>this.props.onToggleFlying(!this.props.flyingEnabled)}
             />
+            <div
+              className={cx(styles.iconButton, styles.megaphone, { [styles.active]: this.props.megaphoneEnabled })}
+              title={this.props.megaphoneEnabled ? "Disable Megaphone" : "Enable Megaphone"}
+              onClick={()=>this.props.onToggleMegaphone(!this.props.megaphoneEnabled)}
+            />
           </div>
         )}
       </div>

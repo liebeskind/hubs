@@ -237,6 +237,32 @@
   }
 }
 
+:local(.iconButton.megaphone) {
+  background-image: url(../hud/megaphone_off.png);
+}
+:local(.iconButton.megaphone:hover) {
+  @media (pointer: fine) {
+    background-image: url(../hud/megaphone_off-hover.png);
+  }
+
+  @media (pointer: coarse) {
+    background-image: url(../hud/megaphone_off.png);
+  }
+}
+
+:local(.iconButton.megaphone.active) {
+  background-image: url(../hud/megaphone_on.png);
+}
+:local(.iconButton.megaphone.active:hover) {
+  @media (pointer: fine) {
+    background-image: url(../hud/megaphone_on-hover.png);
+  }
+
+  @media (pointer: coarse) {
+    background-image: url(../hud/megaphone_on.png);
+  }
+}
+
 :local(.iconButton.mute) {
   background-image: url(../hud/mute_off.png);
 }
