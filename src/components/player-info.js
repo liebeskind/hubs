@@ -36,7 +36,8 @@ function ensureAvatarNodes(json) {
 AFRAME.registerComponent("player-info", {
   schema: {
     avatarSrc: { type: "string" },
-    avatarType: { type: "string", default: AVATAR_TYPES.LEGACY }
+    avatarType: { type: "string", default: AVATAR_TYPES.LEGACY },
+    megaphoneEnabled: { default: false }
   },
   init() {
     this.displayName = null;
@@ -110,20 +111,6 @@ AFRAME.registerComponent("player-info", {
       }
     }
 
-    // Used to enable Megaphone mode, where rolloff is significantly less than the normal 2.0
-    const headEl = this.el.querySelector(".head");
-    if (headEl) {
-      if (this.isOwner) {
-        headEl.setAttribute("networked-audio-source", { rolloffFactor: 0.0 }); // As though right on top of the admin.  
-        // Other options include 
-        // distanceModel: "inverse"
-        // maxDistance: 10000
-        // positional: true
-        // refDistance: 1
-        // rolloffFactor: 0
-      }
-    }
-
     const recordingBadgeEl = this.el.querySelector(".recordingBadge");
     if (recordingBadgeEl) {
       recordingBadgeEl.object3D.visible = this.isRecording;
@@ -136,6 +123,22 @@ AFRAME.registerComponent("player-info", {
   },
   applyProperties() {
     this.applyDisplayName();
+
+    // Used to enable Megaphone mode, where rolloff is significantly less than the normal 2.0
+    const headEl = this.el.querySelector(".head");
+    if (headEl) {
+      if (this.data.megaphoneEnabled && this.isOwner) { // Make sure only admins 
+        headEl.setAttribute("networked-audio-source", { rolloffFactor: 0.15 }); // Normal rolloffFactor is 1.0
+        // Other options for networked-audio-source include 
+        // distanceModel: "inverse"
+        // maxDistance: 10000
+        // positional: true
+        // refDistance: 1
+        // rolloffFactor: 0
+      } else {
+        headEl.setAttribute("networked-audio-source", { rolloffFactor: 2.0 }); // Normal rolloffFactor is 1.0
+      }
+    }
 
     const modelEl = this.el.querySelector(".model");
     if (this.data.avatarSrc && modelEl) {

@@ -20,7 +20,7 @@ AFRAME.registerComponent("in-world-hud", {
       // this.pen.setAttribute("icon-button", "active", this.el.sceneEl.is("pen"));
       this.cameraBtn.setAttribute("icon-button", "active", this.el.sceneEl.is("camera"));
       this.flyBtn.setAttribute("icon-button", "active", this.el.sceneEl.is("flying"));
-      this.megaphoneBtn.setAttribute("icon-button", "active", this.el.sceneEl.is("megaphone"));
+      this.megaphoneBtn.setAttribute("icon-button", "active", this.el.sceneEl.is("megaphoneEnabled"));
 
       if (window.APP.hubChannel) {
         this.spawn.setAttribute("icon-button", "disabled", !window.APP.hubChannel.can("spawn_and_move_media"));
@@ -32,13 +32,16 @@ AFRAME.registerComponent("in-world-hud", {
     this.updateButtonStates();
 
     this.onStateChange = evt => {
-      if (!(evt.detail === "muted" || evt.detail === "frozen" || evt.detail === "pen" || evt.detail === "camera" || evt.detail === "flying"))
+      if (!(evt.detail === "muted" || evt.detail === "frozen" || evt.detail === "pen" || evt.detail === "camera" || evt.detail === "flying" || evt.detail === "megaphoneEnabled"))
         return;
       this.updateButtonStates();
     };
 
     this.onMegaphoneClick = () => {
       this.el.emit("action_megaphone");
+      const playerRig = document.querySelector("#player-rig");
+      const enabled = playerRig.getAttribute("player-info").megaphoneEnabled;
+      playerRig.setAttribute("player-info", "megaphoneEnabled", !enabled);  
     }
 
     this.onMicClick = () => {
@@ -64,7 +67,7 @@ AFRAME.registerComponent("in-world-hud", {
     this.onFlyClick = () => {
       this.el.emit("action_fly");
       const playerRig = document.querySelector("#player-rig");
-      const enabled = playerRig.getAttribute("character-controller", "fly").fly; 
+      const enabled = playerRig.getAttribute("character-controller", "fly").fly;
       playerRig.setAttribute("character-controller", "fly", !enabled);  
     };
 

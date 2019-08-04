@@ -435,6 +435,13 @@ class UIRoot extends Component {
     this.props.scene.emit("action_megaphone");
   };
 
+  toggleMegaphone = enable => {
+    const playerRig = document.querySelector("#player-rig");
+    const enabled = playerRig.getAttribute("player-info").megaphoneEnabled;
+    playerRig.setAttribute("player-info", "megaphoneEnabled", !enabled);  
+    this.setState({megaphoneEnabled: !enabled})
+  }
+
   toggleFreeze = () => {
     this.props.scene.emit("action_freeze");
   };

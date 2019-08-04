@@ -35,6 +35,7 @@ import Cookies from "js-cookie";
 
 import "./components/scene-components";
 import "./components/mute-mic";
+import "./components/toggle-megaphone";
 import "./components/toggle-flying";
 import "./components/bone-mute-state-indicator";
 import "./components/bone-visibility";
