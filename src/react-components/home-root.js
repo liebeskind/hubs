@@ -313,22 +313,24 @@ class HomeRoot extends Component {
                   >
                     {this.state.airtableAssets.Footer_Text_1}
                   </a> : <span />}
-                  <a
+                 {this.state.airtableAssets.Footer_Text_2 && this.state.airtableAssets.Footer_Link_2 ?<a
                     className={styles.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    href={this.state.airtableAssets.Terms_Link || "https://github.com/mozilla/hubs/blob/master/TERMS.md"}
+                    href={this.state.airtableAssets.Footer_Link_2}
+
                   >
-                    <FormattedMessage id="home.terms_of_use" />
-                  </a>
-                  <a
+                    {this.state.airtableAssets.Footer_Text_2}
+                  </a> : <span />}
+                  {this.state.airtableAssets.Footer_Text_3 && this.state.airtableAssets.Footer_Link_3 ?<a
                     className={styles.link}
                     target="_blank"
                     rel="noopener noreferrer"
-                    href={this.state.airtableAssets.Privacy_Link || "https://github.com/mozilla/hubs/blob/master/PRIVACY.md"}
+                    href={this.state.airtableAssets.Footer_Link_3}
+
                   >
-                    <FormattedMessage id="home.privacy_notice" />
-                  </a>
+                    {this.state.airtableAssets.Footer_Text_3}
+                  </a> : <span />}
                   
                   <img className={styles.axonIcon} src={this.state.airtableAssets.Icon} />
                 </div>
