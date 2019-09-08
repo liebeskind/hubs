@@ -211,7 +211,7 @@ class HomeRoot extends Component {
                 )}
               </div>
             </div>
-            <div className={styles.heroContent}>
+            <div className={styles.heroContent} style={{background: this.state.airtableAssets.homepage_background}}>
 
               {!this.props.hideHero &&
                 (this.props.favoriteHubsResult &&
