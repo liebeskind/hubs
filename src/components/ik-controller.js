@@ -108,9 +108,10 @@ AFRAME.registerComponent("ik-controller", {
     this.isInView = true;
     this.hasConvergedHips = false;
     this.lastCameraTransform = new THREE.Matrix4();
-    this.playerCamera = document.querySelector("#player-camera").getObject3D("camera");
+    this.playerCamera = document.getElementById("viewing-camera").getObject3D("camera");
 
     this.el.sceneEl.systems["frame-scheduler"].schedule(this._runScheduledWork, "ik");
+    this.forceIkUpdate = true;
   },
 
   remove() {
@@ -168,6 +169,7 @@ AFRAME.registerComponent("ik-controller", {
     }
 
     const root = this.ikRoot.el.object3D;
+    root.updateMatrices();
     const { camera, leftController, rightController } = this.ikRoot;
 
     camera.object3D.updateMatrix();
@@ -219,7 +221,12 @@ AFRAME.registerComponent("ik-controller", {
       cameraYRotation.x = 0;
       cameraYRotation.z = 0;
       cameraYQuaternion.setFromEuler(cameraYRotation);
-      Quaternion.slerp(hips.quaternion, cameraYQuaternion, hips.quaternion, (this.data.rotationSpeed * dt) / 1000);
+
+      if (this._hadFirstTick) {
+        Quaternion.slerp(hips.quaternion, cameraYQuaternion, hips.quaternion, (this.data.rotationSpeed * dt) / 1000);
+      } else {
+        hips.quaternion.copy(cameraYQuaternion);
+      }
 
       this.hasConvergedHips = quaternionAlmostEquals(0.0001, cameraYQuaternion, hips.quaternion);
 
@@ -247,6 +254,12 @@ AFRAME.registerComponent("ik-controller", {
     if (leftHand) this.updateHand(handRotations.left, leftHand, leftController.object3D, true, this.isInView);
     if (rightHand) this.updateHand(handRotations.right, rightHand, rightController.object3D, false, this.isInView);
     this.forceIkUpdate = false;
+
+    if (!this._hadFirstTick) {
+      // Ensure the avatar is not shown until we've done our first IK step, to prevent seeing mis-oriented/t-pose pose or our own avatar at the wrong place.
+      this.ikRoot.el.object3D.visible = true;
+      this._hasFirstTick = true;
+    }
   },
 
   updateHand(handRotation, handObject3D, controllerObject3D, isLeft, isInView) {

@@ -18,6 +18,7 @@ import { AvatarListingList, AvatarListingEdit } from "./react-components/admin/a
 import { FeaturedSceneListingList, FeaturedSceneListingEdit } from "./react-components/admin/featured-scene-listings";
 import { PendingSceneList } from "./react-components/admin/pending-scenes";
 import { AccountList, AccountEdit } from "./react-components/admin/accounts";
+import { ProjectList, ProjectShow } from "./react-components/admin/projects";
 
 window.APP = new App();
 const store = window.APP.store;
@@ -52,11 +53,16 @@ class AdminUI extends Component {
         <Resource name="avatars" list={AvatarList} edit={AvatarEdit} />
         <Resource name="owned_files" />
 
+        <Resource name="projects" list={ProjectList} show={ProjectShow} />
+
         <Resource name="hubs_metrics" list={ListGuesser} />
       </Admin>
     );
   }
 }
+
+import { IntlProvider } from "react-intl";
+import { lang, messages } from "./utils/i18n";
 
 const mountUI = async retPhxChannel => {
   const dataProvider = postgrestClient("//" + process.env.POSTGREST_SERVER);
@@ -64,7 +70,9 @@ const mountUI = async retPhxChannel => {
   await postgrestAuthenticatior.refreshToken();
 
   ReactDOM.render(
-    <AdminUI dataProvider={dataProvider} authProvider={authProvider} />,
+    <IntlProvider locale={lang} messages={messages}>
+      <AdminUI dataProvider={dataProvider} authProvider={authProvider} />
+    </IntlProvider>,
     document.getElementById("ui-root")
   );
 };

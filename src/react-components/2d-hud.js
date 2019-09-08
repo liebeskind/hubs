@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import cx from "classnames";
 
-const { detect } = require("detect-browser");
 import styles from "../assets/stylesheets/2d-hud.scss";
 import uiStyles from "../assets/stylesheets/ui-root.scss";
 import spritesheet from "../assets/images/spritesheets/css-spritesheet.css";
@@ -33,7 +32,7 @@ const SPRITESHEET_ICONS = {
     spritesheet.micOff7
   ]
 };
-const browser = detect();
+
 const noop = () => {};
 
 class TopHUD extends Component {
@@ -52,7 +51,6 @@ class TopHUD extends Component {
     activeTip: PropTypes.string,
     history: PropTypes.object,
     onToggleMute: PropTypes.func,
-    onToggleFreeze: PropTypes.func,
     onSpawnPen: PropTypes.func,
     onSpawnCamera: PropTypes.func,
     onShareVideo: PropTypes.func,
@@ -103,6 +101,7 @@ class TopHUD extends Component {
       }
     }, 50);
     window.APP.hubChannel.addEventListener("permissions_updated", this.onPermissionsUpdated);
+    this.onPermissionsUpdated();
   };
 
   componentWillUnmount = () => {
@@ -113,7 +112,7 @@ class TopHUD extends Component {
   };
 
   handleVideoShareClicked = source => {
-    if ((source === "screen" || source === "window") && browser.name !== "firefox") {
+    if (source === "screen" && !navigator.mediaDevices.getDisplayMedia) {
       this.props.onShareVideoNotCapable();
       return;
     }
@@ -136,7 +135,7 @@ class TopHUD extends Component {
     if (this.state.showVideoShareOptions) {
       videoShareExtraOptionTypes.push(primaryVideoShareType);
 
-      ["screen", "window", "camera"].forEach(t => {
+      ["screen", "camera"].forEach(t => {
         if (videoShareExtraOptionTypes.indexOf(t) === -1) {
           videoShareExtraOptionTypes.push(t);
         }

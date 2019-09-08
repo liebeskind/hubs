@@ -4,6 +4,8 @@ import "./utils/debug-log";
 console.log(`Hubs version: ${process.env.BUILD_VERSION || "?"}`);
 
 import "./assets/stylesheets/hub.scss";
+import happyEmoji from "./assets/images/chest-emojis/screen-effect/happy.png";
+import loadingEnvironment from "./assets/models/LoadingEnvironment.glb";
 
 import "aframe";
 import "./utils/logging";
@@ -40,6 +42,7 @@ import "./components/toggle-flying";
 import "./components/bone-mute-state-indicator";
 import "./components/bone-visibility";
 import "./components/in-world-hud";
+import "./components/emoji-hud";
 import "./components/virtual-gamepad-controls";
 import "./components/ik-controller";
 import "./components/hand-controls2";
@@ -88,6 +91,7 @@ import "./components/matrix-auto-update";
 import "./components/clone-media-button";
 import "./components/open-media-button";
 import "./components/tweet-media-button";
+import "./components/remix-avatar-button";
 import "./components/transform-object-button";
 import "./components/hover-menu";
 import "./components/disable-frustum-culling";
@@ -100,6 +104,7 @@ import "./components/tags";
 import "./components/hubs-text";
 import "./components/billboard";
 import "./components/periodic-full-syncs";
+import "./components/inspect-button";
 import { sets as userinputSets } from "./systems/userinput/sets";
 
 import ReactDOM from "react-dom";
@@ -153,6 +158,10 @@ const mediaSearchStore = window.APP.mediaSearchStore;
 const OAUTH_FLOW_PERMS_TOKEN_KEY = "ret-oauth-flow-perms-token";
 const NOISY_OCCUPANT_COUNT = 12; // Above this # of occupants, we stop posting join/leaves/renames
 
+// Maximum number of people in the room/entering before users are forced to observer mode.
+// Eventually this should be moved to a room setting.
+const MAX_OCCUPIED_ROOM_ENTRY_SLOTS = 24;
+
 const qs = new URLSearchParams(location.search);
 const isMobile = AFRAME.utils.device.isMobile();
 const isMobileVR = AFRAME.utils.device.isMobileVR();
@@ -164,20 +173,6 @@ if (isEmbed && !qs.get("embed_token")) {
 
 THREE.Object3D.DefaultMatrixAutoUpdate = false;
 window.APP.quality = qs.get("quality") || (isMobile || isMobileVR) ? "low" : "high";
-
-const Ammo = require("ammo.js/builds/ammo.wasm.js");
-const AmmoWasm = require("ammo.js/builds/ammo.wasm.wasm");
-window.Ammo = Ammo.bind(undefined, {
-  locateFile(path) {
-    if (path.endsWith(".wasm")) {
-      return AmmoWasm;
-    }
-    return path;
-  }
-});
-require("aframe-physics-system");
-
-import "./systems/post-physics";
 
 import "./components/owned-object-limiter";
 import "./components/set-unowned-body-kinematic";
@@ -191,8 +186,12 @@ import "./components/cursor-controller";
 import "./components/nav-mesh-helper";
 
 import "./components/tools/pen";
+import "./components/tools/pen-laser";
 import "./components/tools/networked-drawing";
 import "./components/tools/drawing-manager";
+
+import "./components/body-helper";
+import "./components/shape-helper";
 
 import registerNetworkSchemas from "./network-schemas";
 import registerTelemetry from "./telemetry";
@@ -210,9 +209,6 @@ NAF.options.syncSource = PHOENIX_RELIABLE_NAF;
 const isBotMode = qsTruthy("bot");
 const isTelemetryDisabled = qsTruthy("disable_telemetry");
 const isDebug = qsTruthy("debug");
-const loadingEnvironmentURL = proxiedUrlFor(
-  "https://uploads-prod.reticulum.io/files/61d77151-7a74-40a6-b427-0c5a350c4502.glb"
-);
 
 if (!isBotMode && !isTelemetryDisabled) {
   registerTelemetry("/hub", "Room Landing Page");
@@ -229,8 +225,8 @@ function getPlatformUnsupportedReason() {
 }
 
 function setupLobbyCamera() {
-  const camera = document.querySelector("#player-camera");
-  const previewCamera = document.querySelector("#environment-scene").object3D.getObjectByName("scene-preview-camera");
+  const camera = document.getElementById("viewing-camera");
+  const previewCamera = document.getElementById("environment-scene").object3D.getObjectByName("scene-preview-camera");
 
   if (previewCamera) {
     camera.object3D.position.copy(previewCamera.position);
@@ -244,7 +240,6 @@ function setupLobbyCamera() {
   camera.object3D.matrixNeedsUpdate = true;
 
   camera.setAttribute("scene-preview-camera", "positionOnly: true; duration: 60");
-  camera.components["pitch-yaw-rotator"].set(camera.object3D.rotation.x, camera.object3D.rotation.y);
 }
 
 let uiProps = {};
@@ -267,7 +262,10 @@ const qsVREntryType = qs.get("vr_entry_type");
 function mountUI(props = {}) {
   const scene = document.querySelector("a-scene");
   const disableAutoExitOnConcurrentLoad = qsTruthy("allow_multi");
-  const isCursorHoldingPen = scene && scene.systems.userinput.activeSets.includes(userinputSets.cursorHoldingPen);
+  const isCursorHoldingPen =
+    scene &&
+    (scene.systems.userinput.activeSets.includes(userinputSets.rightCursorHoldingPen) ||
+      scene.systems.userinput.activeSets.includes(userinputSets.leftCursorHoldingPen));
   const hasActiveCamera = scene && !!scene.systems["camera-tools"].getMyCamera();
   const forcedVREntryType = qsVREntryType;
 
@@ -323,7 +321,7 @@ async function updateEnvironmentForHub(hub) {
     sceneUrl = hub.scene.model_url;
   } else if (hub.scene === null) {
     // delisted/removed scene
-    sceneUrl = loadingEnvironmentURL;
+    sceneUrl = loadingEnvironment;
   } else {
     const defaultSpaceTopic = hub.topics[0];
     const glbAsset = defaultSpaceTopic.assets.find(a => a.asset_type === "glb");
@@ -381,7 +379,7 @@ async function updateEnvironmentForHub(hub) {
 
             // We've already entered, so move to new spawn point once new environment is loaded
             if (sceneEl.is("entered")) {
-              document.querySelector("#player-rig").components["spawn-controller"].moveToSpawnPoint();
+              document.querySelector("#avatar-rig").components["spawn-controller"].moveToSpawnPoint();
             }
           },
           { once: true }
@@ -392,7 +390,7 @@ async function updateEnvironmentForHub(hub) {
       { once: true }
     );
 
-    environmentEl.setAttribute("gltf-model-plus", { src: loadingEnvironmentURL });
+    environmentEl.setAttribute("gltf-model-plus", { src: loadingEnvironment });
   }
 }
 
@@ -405,7 +403,7 @@ function handleHubChannelJoined(entryManager, hubChannel, messageDispatch, data)
     // on re-join. Ideally this would be updated into the channel socket state but this
     // would require significant changes to the hub channel events and socket management.
     if (scene.is("entered")) {
-      hubChannel.sendEntryEvent();
+      hubChannel.sendEnteredEvent();
     }
 
     // Send complete sync on phoenix re-join.
@@ -436,15 +434,16 @@ function handleHubChannelJoined(entryManager, hubChannel, messageDispatch, data)
   remountUI({
     onSendMessage: messageDispatch.dispatch,
     onLoaded: () => store.executeOnLoadActions(scene),
-    onMediaSearchResultEntrySelected: entry => scene.emit("action_selected_media_result_entry", entry),
+    onMediaSearchResultEntrySelected: (entry, selectAction) =>
+      scene.emit("action_selected_media_result_entry", { entry, selectAction }),
     onMediaSearchCancelled: entry => scene.emit("action_media_search_cancelled", entry),
     onAvatarSaved: entry => scene.emit("action_avatar_saved", entry),
     embedToken: embedToken
   });
 
   scene.addEventListener("action_selected_media_result_entry", e => {
-    const entry = e.detail;
-    if (entry.type !== "scene_listing" && entry.type !== "scene") return;
+    const { entry, selectAction } = e.detail;
+    if ((entry.type !== "scene_listing" && entry.type !== "scene") || selectAction !== "use") return;
     if (!hubChannel.can("update_hub")) return;
 
     hubChannel.updateScene(entry.url);
@@ -455,8 +454,8 @@ function handleHubChannelJoined(entryManager, hubChannel, messageDispatch, data)
     remountUI({
       showInterstitialPrompt: true,
       onInterstitialPromptClicked: () => {
-        scene.emit("2d-interstitial-gesture-complete");
         remountUI({ showInterstitialPrompt: false, onInterstitialPromptClicked: null });
+        scene.emit("2d-interstitial-gesture-complete");
       }
     });
   });
@@ -637,12 +636,14 @@ document.addEventListener("DOMContentLoaded", async () => {
   const scene = document.querySelector("a-scene");
   scene.setAttribute("shadow", { enabled: window.APP.quality !== "low" }); // Disable shadows on low quality
 
-  // Physics needs to be ready before spawning anything.
-  while (!scene.systems.physics.initialized) await nextTick();
+  // HACK - Trigger initial batch preparation with an invisible object
+  scene
+    .querySelector("#batch-prep")
+    .setAttribute("media-image", { batch: true, src: happyEmoji, contentType: "image/png" });
 
   const onSceneLoaded = () => {
-    const physicsSystem = scene.systems.physics;
-    physicsSystem.setDebug(isDebug || physicsSystem.data.debug);
+    const physicsSystem = scene.systems["hubs-systems"].physicsSystem;
+    physicsSystem.setDebug(isDebug || physicsSystem.debug);
     patchThreeAllocations();
   };
 
@@ -667,7 +668,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     const signInContinueTextId = scene.is("vr-mode") ? "entry.return-to-vr" : "dialog.close";
 
-    handleExitTo2DInterstitial(true, () => remountUI({ showSignInDialog: false }));
+    await handleExitTo2DInterstitial(true, () => remountUI({ showSignInDialog: false }));
 
     remountUI({
       showSignInDialog: true,
@@ -711,7 +712,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     );
   });
 
-  scene.addEventListener("action_media_tweet", e => {
+  scene.addEventListener("action_media_tweet", async e => {
     let isInModal = false;
     let isInOAuth = false;
 
@@ -721,7 +722,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       remountUI({ showOAuthDialog: false, oauthInfo: null });
     };
 
-    handleExitTo2DInterstitial(true, () => {
+    await handleExitTo2DInterstitial(true, () => {
       if (isInModal) history.goBack();
       if (isInOAuth) exitOAuth();
     });
@@ -977,6 +978,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
+  // Socket disconnects on refresh but we don't want to show exit scene in that scenario.
+  let isReloading = false;
+  window.addEventListener("beforeunload", () => (isReloading = true));
+
   const socket = await connectToReticulum(isDebug);
 
   socket.onClose(e => {
@@ -984,7 +989,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     // and a variety of other network issues that seem to produce the 1000 closure code, but the
     // latter are probably more common. Either way, we just tell the user they got disconnected.
     const NORMAL_CLOSURE = 1000;
-    if (e.code === NORMAL_CLOSURE) {
+
+    if (e.code === NORMAL_CLOSURE && !isReloading) {
       entryManager.exitScene();
       remountUI({ roomUnavailableReason: "disconnected" });
     }
@@ -1115,6 +1121,10 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   let isInitialJoin = true;
 
+  // state used to ensure we only remountUI when entry allowed changes, since otherwise we'd re-render
+  // on every presence sync.
+  let entryDisallowed = false;
+
   // We need to be able to wait for initial presence syncs across reconnects and socket migrations,
   // so we create this object in the outer scope and assign it a new promise on channel join.
   const presenceSync = {
@@ -1150,10 +1160,27 @@ document.addEventListener("DOMContentLoaded", async () => {
           const occupantCount = Object.entries(presence.state).length;
           vrHudPresenceCount.setAttribute("text", "value", occupantCount.toString());
 
+          // A room entry slot is used by people in the room, or those going through the
+          // entry flow.
+          const roomEntrySlotCount = Object.values(presence.state).reduce((acc, { metas }) => {
+            const meta = metas[metas.length - 1];
+            const usingSlot = meta.presence === "room" || (meta.context && meta.context.entering);
+            return acc + (usingSlot ? 1 : 0);
+          }, 0);
+
           if (occupantCount > 1) {
             scene.addState("copresent");
           } else {
             scene.removeState("copresent");
+          }
+
+          const entryNowDisallowed =
+            roomEntrySlotCount >= MAX_OCCUPIED_ROOM_ENTRY_SLOTS && !hubChannel.canOrWillIfCreator("update_hub");
+
+          if (entryDisallowed !== entryNowDisallowed) {
+            // Optimization to prevent re-render unless entry allowed state changes.
+            entryDisallowed = entryNowDisallowed;
+            remountUI({ entryDisallowed });
           }
 
           // HACK - Set a flag on the presence object indicating if the initial sync has completed,
@@ -1251,10 +1278,48 @@ document.addEventListener("DOMContentLoaded", async () => {
       const permsToken = oauthFlowPermsToken || data.perms_token;
       hubChannel.setPermissionsFromToken(permsToken);
 
-      scene.addEventListener("adapter-ready", ({ detail: adapter }) => {
+      scene.addEventListener("adapter-ready", async ({ detail: adapter }) => {
+        // HUGE HACK Safari does not like it if the first peer seen does not immediately
+        // send audio over its media stream. Otherwise, the stream doesn't work and stays
+        // silent. (Though subsequent peers work fine.)
+        //
+        // This hooks up a simple audio pipeline to push a short tone over the WebRTC
+        // media stream as its created to mitigate this Safari bug.
+        //
+        // Users will never hear this tone -- the outgoing media track is overwritten
+        // before we spawn our avatar, which is when other users will begin hearing
+        // the audio.
+        //
+        // This only covers the case where a Safari user is in the room and the first
+        // other user joins. If a user is in the room and Safari user joins,
+        // then Safari can fail to receive audio from a single peer (it does not seem
+        // to be related to silence, but may be a factor.)
+        const ctx = THREE.AudioContext.getContext();
+        const oscillator = ctx.createOscillator();
+        const gain = ctx.createGain();
+        gain.gain.setValueAtTime(0.01, ctx.currentTime);
+        const dest = ctx.createMediaStreamDestination();
+        oscillator.connect(gain);
+        gain.connect(dest);
+        oscillator.start();
+        const stream = dest.stream;
+        const track = stream.getAudioTracks()[0];
         adapter.setClientId(socket.params().session_id);
         adapter.setJoinToken(data.perms_token);
         hubChannel.addEventListener("permissions-refreshed", e => adapter.setJoinToken(e.detail.permsToken));
+
+        // Stop the tone after we've connected, which seems to mitigate the issue without actually
+        // having to keep this playing and using bandwidth.
+        scene.addEventListener(
+          "didConnectToNetworkedScene",
+          () => {
+            oscillator.stop();
+            track.enabled = false;
+          },
+          { once: true }
+        );
+
+        await adapter.setLocalMediaStream(stream);
       });
       subscriptions.setHubChannel(hubChannel);
 
